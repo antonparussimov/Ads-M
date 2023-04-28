@@ -1,0 +1,32 @@
+{
+  "name": "ads-front",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prettier": "prettier --write \"src/**/*.{js,vue}\""
+  },
+  "dependencies": {
+    "axios": "^1.3.6",
+    "chart.js": "^4.2.1",
+    "flowbite": "^1.6.5",
+    "primevue": "^3.27.0",
+    "tw-elements": "^1.0.0-beta2",
+    "vue": "^3.2.47",
+    "vue-chartjs": "^5.2.0",
+    "vue-router": "^4.1.6",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@mdi/font": "^7.2.96",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
+    "tailwindcss": "^3.3.2",
+    "vite": "^4.1.4",
+    "vuetify": "^3.1.16"
+  }
+}
