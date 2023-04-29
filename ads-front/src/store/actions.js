@@ -1,10 +1,17 @@
-import * as types from './types'
-import axios from axios
+import * as api from '../api'
 
-export const increment = ({ commit }) => {
-  commit('increment');
-};
+export const getAllMessages = ({ commit }) => {
+  api.getAllMessages(messages => {
+    commit('receiveAll', messages)
+  })
+}
 
-export const decrement = ({ commit }) => {
-  commit('decrement');
-};
+export const sendMessage = ({ commit }, payload) => {
+  api.createMessage(payload, message => {
+    commit('receiveMessage', message)
+  })
+}
+
+export const switchThread = ({ commit }, payload) => {
+  commit('switchThread', payload)
+}

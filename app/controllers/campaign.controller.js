@@ -36,9 +36,6 @@ exports.findAll = (req, res) => {
 // Find a campaign data with id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  const page = req.body.page;
-  const itemsPerPage = req.body.itemsPerPage;
-  const sortBy = req.body.sortBy;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
 
@@ -49,11 +46,7 @@ exports.findOne = (req, res) => {
         [Op.lt]: new Date(endDate),
         [Op.gt]: new Date(startDate),
       },
-    },
-    limit: itemsPerPage,
-    offset: (page - 1) * itemsPerPage,
-    order: sortBy,
-    group: ["recId", "campaignId"],
+    }
   })
     .then((data) => {
       res.json(data);
