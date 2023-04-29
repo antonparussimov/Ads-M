@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  // origin: "http://localhost:"
 };
 
 app.use(cors(corsOptions));
@@ -24,20 +24,28 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-// // drop the table if it already exists
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-// });
+// drop the table if it already exists
+// db.sequelize.sync({ force: true })
+//   .then(() => {
+//     console.log("Drop and re-sync db.");
+//     // seeder
+//     const campaignSeeder = require('./app/seeder/campaign.seeder');
+//     campaignSeeder();
+//   })
+//   .catch((err) => {
+//     console.log("Failed to sync db: " + err.message);
+//   });
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({message: `Server running on port ${PORT}`})
 });
 
-require("./app/routes/turorial.routes")(app);
+require("./app/routes/campaign.routes")(app);
+
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
