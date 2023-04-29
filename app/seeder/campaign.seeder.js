@@ -4,6 +4,10 @@ const Campaign = db.campaigns;
 const Op = db.Sequelize.Op;
 
 module.exports = () => {
+  if(Campaign.count()) {
+    console.log('Already inserted seed data');
+    return;
+  }
   Campaign.create({date: '2022-08-22', campaignId: 1, campaignName: 'CP1', groupId: 1, groupName: 'GROUP1', adId: 1741865281003569, adName: 'AD1', cost: 516, views: 3360, clicks: 21, cv: 0, viewsSec: 658, views_full: 8, likes: 5});
   Campaign.create({date: '2022-08-22', campaignId: 1, campaignName: 'CP1', groupId: 2, groupName: 'GROUP2', adId: 1741864135069729, adName: 'AD2', cost: 1289, views: 5176, clicks: 33, cv: 2, viewsSec: 1754, views_full: 23, likes: 1})
   Campaign.create({date: '2022-08-22', campaignId: 2, campaignName: 'CP2', groupId: 2, groupName: 'GROUP2', adId: 1741865290558497, adName: 'AD3', cost: 617, views: 2029, clicks: 16, cv: 0, viewsSec: 483, views_full: 3, likes: 5})
