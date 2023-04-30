@@ -4,30 +4,12 @@ import * as actions from './actions'
 import mutations from './mutations'
 
 const state = {
-  currentThreadID: null,
-  threads: {
-    /*
-    id: {
-      id,
-      name,
-      messages: [...ids],
-      lastMessage
-    }
-    */
+  campaignList: [],
+  campaignDetail: {
+    id: null,
+    selectedColumns: ['date', 'cost', 'costPerResult', 'cpc', 'impressions', 'ctr', 'clicks', 'resultRate', 'result', 'cpa', 'cvr', 'conversions', 'reach', 'costPer1000People', 'frequency'],
+    campaignHistory: [],
   },
-  messages: {
-    /*
-    id: {
-      id,
-      threadId,
-      threadName,
-      authorName,
-      text,
-      timestamp,
-      isRead
-    }
-    */
-  }
 }
 
 export default createStore({
@@ -35,7 +17,5 @@ export default createStore({
   getters,
   actions,
   mutations,
-  plugins: process.env.NODE_ENV !== 'production'
-    ? [createLogger()]
-    : []
+  plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
 })

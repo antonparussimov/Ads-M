@@ -4,10 +4,10 @@ module.exports = app => {
   var router = require("express").Router();
 
   // Retrieve all campaigns
-  router.get('/', campaigns.findAll);
+  router.post('/', campaigns.findAll);
 
   // Find a campaign data with id
-  router.get('/detail/:id', campaigns.findOne)
+  router.post('/detail', campaigns.findOne)
 
   app.use("/api/campaigns", router);
 }

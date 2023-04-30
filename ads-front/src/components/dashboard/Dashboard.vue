@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-gray-200 p-0">
-    <div class="flex flex-wrap md:flex-nowrap p-5 gap-5 w-full">
+    <div class="flex flex-wrap sm:flex-wrap md:flex-nowrap p-5 gap-4 w-full">
       <div class="flex flex-col w-full md:w-1/3 bg-white p-3 rounded-md">
         <div class="flex justify-between items-center w-full">
           <h3>今日の消化金額</h3>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="w-full p-5">
-          <ul class="grid grid-cols-4 gap-4">
+          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <li
               class="border-solid border-l-4 border-blue-500 p-2 bg-gray-200 rounded-sm"
             >

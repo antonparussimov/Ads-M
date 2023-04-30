@@ -4,23 +4,11 @@ const Op = db.Sequelize.Op;
 
 // Retrieve all campaigns
 exports.findAll = (req, res) => {
-  const page = req.body.page;
-  const itemsPerPage = req.body.itemsPerPage;
-  const sortBy = req.body.sortBy;
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
-
   Campaign.findAll({
-    where: {
-      date: {
-        [Op.lt]: new Date(endDate),
-        [Op.gt]: new Date(startDate),
-      },
-    },
-    limit: itemsPerPage,
-    offset: (page - 1) * itemsPerPage,
-    order: sortBy,
-    group: ["recId", "campaignId"],
+    order: [
+      ['recId', 'ASC']
+    ],
+    // group: "campaignId",
   })
     .then((data) => {
       res.json(data);
@@ -35,7 +23,7 @@ exports.findAll = (req, res) => {
 
 // Find a campaign data with id
 exports.findOne = (req, res) => {
-  const id = req.params.id;
+  const id = req.body.id;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
 

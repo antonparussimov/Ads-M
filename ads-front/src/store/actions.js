@@ -1,17 +1,22 @@
-import * as api from '../api'
+import axios from 'axios'
 
-export const getAllMessages = ({ commit }) => {
-  api.getAllMessages(messages => {
-    commit('receiveAll', messages)
-  })
+export const getCampaigns = ({ commit }) => {
+  console.log('payload');
+  axios.post('http://localhost:5000/api/campaigns')
+    .then(res => {
+      commit('getCampaigns', res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
-export const sendMessage = ({ commit }, payload) => {
-  api.createMessage(payload, message => {
-    commit('receiveMessage', message)
-  })
-}
-
-export const switchThread = ({ commit }, payload) => {
-  commit('switchThread', payload)
+export const getCampaignDetail = ({ commit }, payload) => {
+  axios.post('http://localhost:5000/api/campaigns/detail', payload)
+    .then(res => {
+      commit('getCampaignDetail', res.data)
+    })
+    .catch(err=> {
+      console.log(err)
+    })
 }

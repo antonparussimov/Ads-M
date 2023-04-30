@@ -10,7 +10,7 @@
           <v-window v-model="tab">
             <v-window-item value="one">
               <CampaignDetailMainChart />
-              <!-- <CampaignDetailMainTable /> -->
+              <CampaignDetailMainTable />
             </v-window-item>
     
             <v-window-item value="two"></v-window-item>

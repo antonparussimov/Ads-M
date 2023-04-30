@@ -14,6 +14,12 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+
+const store = useStore()
+
+const route = useRoute()
 
 const startDate = ref(null)
 const endDate = ref(null)
@@ -37,7 +43,13 @@ function updateDate(e) {
     return;
   }
 
+  const payload = {
+    id: route.params.id,
+    startDate: startDate.value,
+    endDate: endDate.value
+  }
   
+  store.dispatch('getCampaignDetail', payload)
 }
 
 </script>
