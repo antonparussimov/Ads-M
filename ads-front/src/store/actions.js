@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 export const getCampaigns = ({ commit }) => {
-  console.log('payload');
   axios.post('http://localhost:5000/api/campaigns')
     .then(res => {
       commit('getCampaigns', res.data)
@@ -12,6 +11,8 @@ export const getCampaigns = ({ commit }) => {
 }
 
 export const getCampaignDetail = ({ commit }, payload) => {
+  commit('updateStartDate', payload.startDate)
+  commit('updateEndDate', payload.endDate)
   axios.post('http://localhost:5000/api/campaigns/detail', payload)
     .then(res => {
       commit('getCampaignDetail', res.data)

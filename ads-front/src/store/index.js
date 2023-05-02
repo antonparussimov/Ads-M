@@ -7,8 +7,11 @@ const state = {
   campaignList: [],
   campaignDetail: {
     id: null,
+    startDate: null,
+    endDate: null,
     selectedColumns: ['date', 'cost', 'costPerResult', 'cpc', 'impressions', 'ctr', 'clicks', 'resultRate', 'result', 'cpa', 'cvr', 'conversions', 'reach', 'costPer1000People', 'frequency'],
     campaignHistory: [],
+    chartData: [],
   },
 }
 

@@ -7,7 +7,7 @@
     </div>
 
     <div class="flex flex-wrap gap-4 w-full lg:w-2/3 lg:justify-end">
-      <AnalysisComponent title="インプレツション" val=434 unit="" />
+      <AnalysisComponent title="インプレツション" val=0 unit="" />
       <AnalysisComponent title="クリック" :val="clicks" unit="" />
       <AnalysisComponent title="CPC" :val="cpc" unit="JPY" />
       <AnalysisComponent title="CTR" :val="ctr" unit="%" />

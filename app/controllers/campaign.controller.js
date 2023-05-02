@@ -1,6 +1,7 @@
 const db = require("../models");
 const Campaign = db.campaigns;
 const Op = db.Sequelize.Op;
+const Sequelize = db.Sequelize;
 
 // Retrieve all campaigns
 exports.findAll = (req, res) => {
@@ -27,6 +28,7 @@ exports.findOne = (req, res) => {
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
 
+  const result = {}
   Campaign.findAll({
     where: {
       campaignId: id,
@@ -37,7 +39,7 @@ exports.findOne = (req, res) => {
     }
   })
     .then((data) => {
-      res.json(data);
+      result.campaignHistory = data;
     })
     .catch((err) => {
       res.status(500).json({
@@ -45,4 +47,31 @@ exports.findOne = (req, res) => {
           err.message || "Some error occurred while retrieving campaigns",
       });
     });
+  
+  Campaign.findAll({
+    attributes: [
+      'date',
+      [Sequelize.fn('SUM', Sequelize.col('cost')), 'cost'],
+    ],
+    where: {
+      campaignId: id,
+      date: {
+        [Op.lt]: new Date(endDate),
+        [Op.gt]: new Date(startDate),
+      },
+    },
+    order: [
+      ['date', 'ASC']
+    ],
+    group: 'date'
+  })
+    .then((data) => {
+      result.chartData = data;
+      res.json(result)
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message
+      })
+    })
 };
