@@ -7,6 +7,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { format } from 'date-fns'
 
 const store = useStore()
 
@@ -96,6 +97,12 @@ const chartOptions = computed(() => {
       tickAmount: 8,
       min: new Date(store.state.campaignDetail.startDate).getTime(),
       max: new Date(store.state.campaignDetail.endDate).getTime(),
+      labels: {
+        rotateAlways: false,
+        formatter: function (val, timestamp) {
+          return format(new Date(timestamp), 'yyyy-MM-dd')
+        },
+      },
     },
   }
 })
