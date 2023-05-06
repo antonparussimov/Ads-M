@@ -31,20 +31,43 @@ exports.create = (req, res) => {
     return;
   }
 
-  let rlt = [];
   req.body.presets.map((item, index) => {
     CampaignPresets.create(item)
-      .then(data => {
-        rlt.push(data);
+      .then((preset) => {
       })
       .catch(err => {
-        res.status(500).json({
+        res.status(500).send({
           message: "Invaild Preset Error"
-        })
-        return;
+        });
       });
   });
-  res.json({
-    data: rlt
-  });
+
+  CampaignPresets.findAll({
+    order: [
+      ['recId', 'ASC']
+    ],
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message:
+          err.message || "Some error occurred while retrieving campaignsPesets",
+      });
+    });
 };
+
+function getAll() {
+  CampaignPresets.findAll({
+    order: [
+      ['recId', 'ASC']
+    ],
+  })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return [];
+    });
+}

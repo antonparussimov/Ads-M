@@ -2,10 +2,10 @@
   <v-card variant="outlined" class="p-3 w-72 bg-white">
     <template v-for="(value, key) in campaign">
       <v-switch
-        v-if="campaignField[key].type == 'switch'" :label="campaignField[key].title" :value="value" @input="(event) => changeContent(key, event)"
+        v-if="campaignField[key].type == 'switch'" :label="campaignField[key].title" :model-value="value" @input="(event) => changeContent(key, event)"
       ></v-switch>
       <v-text-field variant="outlined"
-        v-if="campaignField[key].type == 'string'" :label="campaignField[key].title" :value="value" @input="(event) => changeContent(key, event)"
+        v-if="campaignField[key].type == 'string'" :label="campaignField[key].title" :model-value="value" @input="(event) => changeContent(key, event)"
       ></v-text-field>
     </template>
     <div v-if="showPresetSelectable" class="">

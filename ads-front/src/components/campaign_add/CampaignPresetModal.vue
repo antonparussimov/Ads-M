@@ -16,14 +16,13 @@
                   key="preset{{ index }}"
                   :title="item.title"
                   :value="index"
+                  @click="showPreset(index)"
                 />
               </v-list>
             </v-col>
             <v-divider vertical></v-divider>
             <v-col>
-              <v-sheet class="pa-2 ma-2">
-                .v-col-auto
-              </v-sheet>
+              <CampaignPreset :index="selectedPreset" />
             </v-col>
           </v-row>
         </v-card-text>
@@ -42,11 +41,14 @@ import { startOfDecade } from 'date-fns';
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import * as types from '../../store/types'
+import CampaignPreset from './CampaignPreset.vue';
 
 const store = useStore()
 
 /** state */
 const dialog = ref(false)
+
+const selectedPreset = ref(0)
 
 const presetList = computed(() => {
   return store.state.campaignAdd.presets
@@ -58,7 +60,13 @@ onMounted(() => {
 })
 
 /** event listener */
-function addPresetToCampaign() {
-
+function showPreset(index) {
+  selectedPreset.value = index
 }
+
+function addPresetToCampaign() {
+  dialog.value = !dialog.value
+  store.commit(types.ADD_NEW_CAMPAIGN_FROM_PRESET, selectedPreset.value)
+}
+
 </script>

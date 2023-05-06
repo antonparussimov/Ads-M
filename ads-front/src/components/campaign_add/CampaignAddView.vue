@@ -46,7 +46,7 @@ const showPresetSelectable = computed(() => {
 
 /** event listener */
 function addNewCampaign() {
-  let newCampaign = {titie: ''}
+  let newCampaign = {title: ''}
   for(let i = 0 ; i < Object.keys(campaignFields).length ; i ++) {
     newCampaign[`cell${i}`] = ''
   }

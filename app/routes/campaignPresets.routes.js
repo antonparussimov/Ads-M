@@ -4,7 +4,7 @@ module.exports = app => {
   var router = require("express").Router();
 
   // Retrieve all campaigns
-  router.post('/', campaignsPresets.findAll);
+  router.get('/', campaignsPresets.findAll);
 
   // Find a campaign data with id
   router.post('/add_preset', campaignsPresets.create)

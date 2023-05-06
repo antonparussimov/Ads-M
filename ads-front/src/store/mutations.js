@@ -39,7 +39,7 @@ export default {
   },
 
   [types.ADD_NEW_PRESET] (state, payload) {
-    state.campaignAdd.presets = [...state.campaignAdd.presets, payload]
+    state.campaignAdd.presets = payload
   },
 
   [types.CHANGE_NEW_CAMPAIGN_TITLE] (state, payload) {
@@ -47,6 +47,14 @@ export default {
   },
 
   [types.GET_PRESETS] (state, payload) {
-    state.compaignAdd.presets = payload
-  }
+    state.campaignAdd.presets = payload
+  },
+
+  [types.ADD_NEW_CAMPAIGN_FROM_PRESET] (state, payload) {
+    let ret = Object.entries(state.campaignAdd.presets[payload]);
+
+    ret = ret.filter(([key, value]) => (key.includes('cell') || key == 'title'));
+    ret = Object.fromEntries(ret)
+    state.campaignAdd.campaigns = [...state.campaignAdd.campaigns, ret]
+  },
 }
