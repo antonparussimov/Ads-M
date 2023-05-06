@@ -1,6 +1,6 @@
 import { createStore, createLogger } from 'vuex'
 import * as getters from './getters'
-import * as actions from './actions'
+import actions from './actions'
 import mutations from './mutations'
 
 const state = {
@@ -13,6 +13,12 @@ const state = {
     campaignHistory: [],
     chartData: [],
   },
+  campaignAdd: {
+    campaigns: [],
+    presets: [],
+    selectedCampaigns: [],
+    showPresetSelectable: false,
+  }
 }
 
 export default createStore({

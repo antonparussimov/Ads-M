@@ -15,6 +15,11 @@ const routes = [
     path: '/tik/perf/campaign/detail/:id',
     name: 'CampaignDetail',
     component: () => import('/src/components/campaign/detail/CampaignDetail.vue')
+  },
+  {
+    path: '/tik/perf/campaign/add',
+    name: 'CampaignAdd',
+    component: () => import('/src/components/campaign_add/CampaignAddView.vue')
   }
 ]
 
