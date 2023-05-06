@@ -44,5 +44,9 @@ export default {
 
   [types.CHANGE_NEW_CAMPAIGN_TITLE] (state, payload) {
     state.campaignAdd.campaigns[payload.index].title = payload.title
+  },
+
+  [types.GET_PRESETS] (state, payload) {
+    state.compaignAdd.presets = payload
   }
 }

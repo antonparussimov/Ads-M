@@ -28,8 +28,9 @@
           </v-row>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = !dialog"> Close </v-btn>
+        <v-card-actions justify="end">
+          <v-btn color="blue" variant="text" @click="addPresetToCampaign"> 追加 </v-btn>
+          <v-btn color="blue-darken-1" variant="text" @click="dialog = !dialog"> キャンセル </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -37,14 +38,27 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { startOfDecade } from 'date-fns';
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import * as types from '../../store/types'
 
 const store = useStore()
 
+/** state */
 const dialog = ref(false)
 
 const presetList = computed(() => {
   return store.state.campaignAdd.presets
 })
+
+/** lifecycle method */
+onMounted(() => {
+  store.dispatch(types.GET_PRESETS)
+})
+
+/** event listener */
+function addPresetToCampaign() {
+
+}
 </script>

@@ -45,6 +45,7 @@ app.get("/", (req, res) => {
 });
 
 require("./app/routes/campaign.routes")(app);
+require("./app/routes/campaignPresets.routes")(app);
 
 
 // set port, listen for requests

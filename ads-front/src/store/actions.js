@@ -37,11 +37,21 @@ export default {
   },
 
   [types.ADD_NEW_PRESET] (context) {
-    axios.post(`${proxy}/add_preset`, {
+    axios.post(`${proxy}/presets/add_preset`, {
       presets: context.state.campaignAdd.campaigns.filter((item, index) => context.state.campaignAdd.selectedCampaigns.includes(index))
     })
       .then(res => {
         commit(types.ADD_NEW_PRESET, res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+
+  [types.GET_PRESETS] ({commit}) {
+    axios.get(`${proxy}/presets`)
+      .then(res => {
+        commit(types.GET_PRESETS, res.data)
       })
       .catch(err => {
         console.log(err)
