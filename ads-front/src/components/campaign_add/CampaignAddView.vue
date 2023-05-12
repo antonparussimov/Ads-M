@@ -68,9 +68,17 @@ function addNewPreset() {
 function addToTikTok() {
   store.state.campaignAdd.campaigns.map((item) => {
     let Tk = new TikTokADS3({
-      ACCESS_TOKEN  :"89a97d054966d74362288ef4b4933c2eb35502a5",
-      getStat       :[item.cell5, item.cell8, 'show_cnt','click_cnt', 'convert_cnt', 'time_attr_view','play_duration_2s',"play_duration_6s","play_over","ad_like"],　　　　//取得したいデータを設定する
-      advertiser_id : item.cell3,
+      ACCESS_TOKEN: "89a97d054966d74362288ef4b4933c2eb35502a5",
+      campaign_name: item.cell5,
+      campaign_type: item.cell10,
+      budget_mode: item.cell7,
+      budget: item.cell8,
+      start_time: item.cell56,
+      end_time: item.cell57,
+      optimization_goal: item.cell59,
+      billing_event: item.cell62,
+      bid: item.cell64,
+      app_id: item.cell3,
     })
   
 　  Tk.createCampaign()
