@@ -41,7 +41,7 @@ export default {
       presets: context.state.campaignAdd.campaigns.filter((item, index) => context.state.campaignAdd.selectedCampaigns.includes(index))
     })
       .then(res => {
-        commit(types.ADD_NEW_PRESET, res.data)
+        context.commit(types.ADD_NEW_PRESET, res.data)
       })
       .catch(err => {
         console.log(err)
