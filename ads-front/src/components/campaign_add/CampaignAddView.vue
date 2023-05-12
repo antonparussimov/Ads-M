@@ -1,4 +1,5 @@
 <template>
+  <HamburgerMenu />
   <div class="bg-gray-200 w-full p-5">
     <h2 class="text-3xl">広告作成</h2>
 
@@ -30,6 +31,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import CampaignAddItem from './CampaignAddItem.vue'
 import CampaignPresetModal from './CampaignPresetModal.vue'
+import HamburgerMenu from '../common/HamburgerMenu.vue'
 import campaignFields from '../../data/campaignField'
 import * as types from '../../store/types'
 import TikTokADS3 from '../../rest_api/TikTokADS3'

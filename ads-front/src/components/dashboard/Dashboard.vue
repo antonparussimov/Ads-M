@@ -1,4 +1,5 @@
 <template>
+  <HamburgerMenu />
   <div class="w-full bg-gray-200 p-0">
     <div class="flex flex-wrap sm:flex-wrap md:flex-nowrap p-5 gap-4 w-full">
       <div class="flex flex-col w-full md:w-1/3 bg-white p-3 rounded-md">
@@ -194,4 +195,5 @@
 
 <script setup>
 import Chart from './Chart.vue'
+import HamburgerMenu from '../common/HamburgerMenu.vue'
 </script>
