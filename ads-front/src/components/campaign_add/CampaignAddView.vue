@@ -81,7 +81,7 @@ function addToTikTok() {
       app_id: item.cell3,
     })
   
-　  Tk.createCampaign()
+    Tk.createCampaign()
   })
 }
 </script>
