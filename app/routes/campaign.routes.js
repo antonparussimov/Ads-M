@@ -9,5 +9,7 @@ module.exports = app => {
   // Find a campaign data with id
   router.post('/detail', campaigns.findOne)
 
+  router.get('/get_campaign_from_tiktok', campaigns.getCampaignFromTiktok)
+
   app.use("/api/campaigns", router);
 }

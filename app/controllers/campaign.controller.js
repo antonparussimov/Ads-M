@@ -1,5 +1,7 @@
+const axios = require('axios');
 const db = require("../models");
 const Campaign = db.campaigns;
+const CampaignGettingHistory = db.campaignGettingHistory;
 const Op = db.Sequelize.Op;
 const Sequelize = db.Sequelize;
 
@@ -75,3 +77,77 @@ exports.findOne = (req, res) => {
       })
     })
 };
+
+exports.getCampaignFromTiktok = async (req, res) => {
+  CampaignGettingHistory.findOne({
+    order: [
+      ['date', 'DESC']
+    ]
+  })
+    .then((data) => {
+      let latest_date;
+      if(data == null) {
+        latest_date = '0000-00-00';
+      } else {
+        latest_date = data.date;
+      }
+
+      // get campaigns from tiktok
+      try {
+        axios.get(
+          'https://ads.tiktok.com/open_api/v1.2/campaign/get',
+          {
+            params: {
+              start_date: latest_date,
+              advertiser_id: 10242341234,
+              fields: 'campaign_id, campaign_name',
+            },
+            headers: {
+              'Access-Token': '89a97d054966d74362288ef4b4933c2eb35502a5',
+            },
+          }
+        )
+          .then(res => {
+            if(res.data) {
+              res.data.map(item => {
+                addCampaign(item)
+              });
+            }
+            
+            res.send({
+              result: response.data
+            });
+          })
+          .catch(err => {
+            res.status(404).send({
+              message: 'tiktok api error'
+            })
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message
+      })
+    })
+}
+
+const addCampaign = (data) => {
+  const campaign = {
+    campaignId: data.campaignId,
+    campaignName: data.campaignName,
+    //add fields
+  }
+
+  Campaign.create(campaign)
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err.message
+      });
+    });
+}

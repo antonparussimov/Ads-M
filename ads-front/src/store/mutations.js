@@ -57,4 +57,12 @@ export default {
     ret = Object.fromEntries(ret)
     state.campaignAdd.campaigns = [...state.campaignAdd.campaigns, ret]
   },
+
+  [types.GET_CAPAIGN_FROM_TIKTOK] (state) {
+    state.campaignGettingFlag = true
+  },
+
+  [types.GETED_CAPAIGN_FROM_TIKTOK] (state) {
+    state.campaignGettingFlag = false
+  },
 }

@@ -18,7 +18,8 @@ const state = {
     presets: [],
     selectedCampaigns: [],
     showPresetSelectable: false,
-  }
+  },
+  campaignGettingFlag: false,
 }
 
 export default createStore({

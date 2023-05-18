@@ -20,5 +20,6 @@ db.sequelize = sequelize;
 
 db.campaigns = require("./campaign.model.js")(sequelize, Sequelize);
 db.campaignsPresets = require('./campaign_presets.model.js')(sequelize, Sequelize);
+db.campaignGettingHistory = require('./campaignGettingHistory.model.js')(sequelize, Sequelize);
 
 module.exports = db;

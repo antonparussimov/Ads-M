@@ -15,18 +15,46 @@
       </v-list>
     </v-menu>
   </div>
+  <v-dialog
+    v-model="dialog"
+    :scrim="false"
+    persistent
+    width="auto"
+  >
+    <v-card
+      color="primary"
+    >
+      <v-card-text>
+        Getting campaigns from Tiktok...
+        <v-progress-linear
+          indeterminate
+          color="white"
+          class="mb-0"
+        ></v-progress-linear>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import * as types from '../../store/types'
+
+const store = useStore()
 
 const isOpen = ref(false)
+
+const dialog = computed(() => {
+  return store.state.campaignGettingFlag
+})
 
 const items = ref([
   { title: 'Dashboard' }, 
   { title: 'Campaigns' }, 
   { title: 'Add Campaign' }, 
+  { title: 'データを更新する' },
 ])
 
 function toggleMenu() {
@@ -37,10 +65,12 @@ const router = useRouter()
 function goToPage(index) {
   if (index == 0) {
     router.push('/')
-  }else if(index == 1) {
+  } else if(index == 1) {
     router.push('/tik/perf/campaign')
-  } else {
+  } else if(index == 2) {
     router.push('/tik/perf/campaign/add')
+  } else if(index == 3) {
+    store.dispatch(types.GET_CAPAIGN_FROM_TIKTOK)
   }
 }
 </script>

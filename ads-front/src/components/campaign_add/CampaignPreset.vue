@@ -15,13 +15,14 @@
 </template>
 
 <script setup>
+import { useStore } from 'vuex'
+import { ref, computed } from 'vue'
+import campaignField from '../../data/campaignField';
+
 const props = defineProps({
   index: Number,
 })
 
-import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
-import campaignField from '../../data/campaignField';
 const store = useStore()
 
 /*----------------state---------------*/

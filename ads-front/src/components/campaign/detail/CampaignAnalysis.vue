@@ -52,7 +52,4 @@ const cpa = computed(() => {
 const cvr = computed(() => {
   return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cv/item.clicks, 0.0).toFixed(2)
 })
-
-
-
 </script>

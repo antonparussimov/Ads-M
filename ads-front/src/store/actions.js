@@ -56,5 +56,20 @@ export default {
       .catch(err => {
         console.log(err)
       })
+  },
+
+  [types.GET_CAPAIGN_FROM_TIKTOK] ({ commit }) {
+    commit(types.GET_CAPAIGN_FROM_TIKTOK)
+    // context.state.campaignGettingFlag = true
+    axios.get(`${proxy}/campaigns/get_campaign_from_tiktok`)
+      .then(res => {
+        commit(types.GETED_CAPAIGN_FROM_TIKTOK)
+        // context.state.campaignGettingFlag = false
+      })
+      .catch(err => {
+        commit(types.GETED_CAPAIGN_FROM_TIKTOK)
+        // context.state.campaignGettingFlag = false
+        console.log(err)
+      })
   }
 }
