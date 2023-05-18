@@ -109,6 +109,8 @@ exports.getCampaignFromTiktok = async (req, res) => {
         )
           .then(res => {
             if(res.data) {
+              CampaignGettingHistory.create({date: new Date(), addCount: res.data.length});
+
               res.data.map(item => {
                 addCampaign(item)
               });
