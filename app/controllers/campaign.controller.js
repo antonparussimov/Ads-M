@@ -99,8 +99,7 @@ exports.getCampaignFromTiktok = (req, res) => {
           {
             params: {
               start_date: latest_date,
-              advertiser_id: 10242341234,
-              fields: 'campaign_id, campaign_name',
+              advertiser_id: 7128276846151483393,
             },
             headers: {
               'Access-Token': '89a97d054966d74362288ef4b4933c2eb35502a5',
@@ -108,8 +107,10 @@ exports.getCampaignFromTiktok = (req, res) => {
           }
         )
           .then(res => {
-            if(res.data) {
-              res.data.map(item => {
+            console.log(res.data);
+
+            if(res.data.list[0] != undefined) {
+              res.data.list.map(item => {
                 addCampaign(item)
               });
               
