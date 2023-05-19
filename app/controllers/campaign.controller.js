@@ -78,7 +78,7 @@ exports.findOne = (req, res) => {
     })
 };
 
-exports.getCampaignFromTiktok = async (req, res) => {
+exports.getCampaignFromTiktok = (req, res) => {
   CampaignGettingHistory.findOne({
     order: [
       ['date', 'DESC']
@@ -121,7 +121,7 @@ exports.getCampaignFromTiktok = async (req, res) => {
             });
           })
           .catch(err => {
-            res.status(404).send({
+            res.status(200).send({
               message: 'tiktok api error'
             })
           });

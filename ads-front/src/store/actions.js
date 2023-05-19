@@ -45,7 +45,7 @@ export default {
       })
       .catch(err => {
         console.log(err)
-      })
+      });
   },
 
   [types.GET_PRESETS] ({commit}) {
