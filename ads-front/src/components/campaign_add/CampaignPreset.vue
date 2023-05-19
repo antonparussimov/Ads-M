@@ -28,14 +28,17 @@ const store = useStore()
 /*----------------state---------------*/
 
 const preset = computed(() => {
-  let ret = Object.entries(store.state.campaignAdd.presets[props.index]);
-
-  ret = ret.filter(([key, value]) => key.includes('cell'));
-  ret = Object.fromEntries(ret)
-  return ret
+  if(store.state.campaignAdd.presets[0] == undefined) return []
+  else {
+    let ret = Object.entries(store.state.campaignAdd.presets[props.index]);
+  
+    ret = ret.filter(([key, value]) => key.includes('cell'));
+    ret = Object.fromEntries(ret)
+    return ret
+  }
 })
 
 const title = computed(() => {
-  return store.state.campaignAdd.presets[props.index].title
+  return store.state.campaignAdd.presets[0] != undefined ? store.state.campaignAdd.presets[props.index].title : ''
 })
 </script>
