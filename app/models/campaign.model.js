@@ -10,13 +10,13 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.NOW
     },
     campaignId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.BIGINT,
     },
     campaignName: {
       type: Sequelize.STRING,
     },
     campaignGroupId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.BIGINT
     },
     groupName: {
       type: Sequelize.STRING,

@@ -21,7 +21,7 @@ db.sequelize.sync()
     console.log("Synced db.");
     // seeder
     const campaignSeeder = require('./app/seeder/campaign.seeder');
-    campaignSeeder();
+    // campaignSeeder();
   })
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);

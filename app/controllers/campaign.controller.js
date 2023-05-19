@@ -99,7 +99,8 @@ exports.getCampaignFromTiktok = (req, res) => {
           {
             params: {
               start_date: latest_date,
-              advertiser_id: 7128276846151483393,
+              end_date: new Date(),
+              advertiser_id: '7128276846151483393',
             },
             headers: {
               'Access-Token': '89a97d054966d74362288ef4b4933c2eb35502a5',
@@ -107,18 +108,18 @@ exports.getCampaignFromTiktok = (req, res) => {
           }
         )
           .then(res => {
-            console.log(res.data);
-
-            if(res.data.list[0] != undefined) {
-              res.data.list.map(item => {
-                addCampaign(item)
+            let addedCount = 0;
+            if(res.data.data.list[0] != undefined) {
+              res.data.data.list.map(item => {
+                addCampaign(item);
               });
+              addedCount = res.data.data.list.length;
               
               CampaignGettingHistory.create({date: new Date(), addCount: res.data.length});
             }
             
             res.send({
-              result: response.data
+              result: addedCount
             });
           })
           .catch(err => {
@@ -139,18 +140,17 @@ exports.getCampaignFromTiktok = (req, res) => {
 
 const addCampaign = (data) => {
   const campaign = {
-    campaignId: data.campaignId,
-    campaignName: data.campaignName,
+    campaignId: data.campaign_id,
+    campaignName: data.campaign_name,
+    adId: data.advertiser_id
     //add fields
   }
-
+  
   Campaign.create(campaign)
     .then(data => {
       return data;
     })
     .catch(err => {
-      res.status(500).json({
-        message: err.message
-      });
+      return err;
     });
 }

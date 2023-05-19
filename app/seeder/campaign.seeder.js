@@ -4,7 +4,7 @@ const Campaign = db.campaigns;
 const Op = db.Sequelize.Op;
 
 module.exports = () => {
-  if(Campaign.count()>0) {
+  if(Campaign.count() > 0) {
     console.log('Already inserted seed data');
     return;
   }
