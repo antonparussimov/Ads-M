@@ -65,4 +65,8 @@ export default {
   [types.GETED_CAPAIGN_FROM_TIKTOK] (state) {
     state.campaignGettingFlag = false
   },
+
+  [types.ADD_CAMPAIGN_TO_TIKTOK] (state) {
+    state.campaignAdd.campaigns = []
+  },
 }

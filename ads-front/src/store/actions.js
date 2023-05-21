@@ -72,5 +72,17 @@ export default {
         // context.state.campaignGettingFlag = false
         console.log(err)
       })
-  }
+  },
+
+  [types.ADD_CAMPAIGN_TO_TIKTOK] ({state, commit}) {
+    axios.post(`${proxy}/campaigns/add_campaign_to_tiktok`, {
+      campaigns: state.campaignAdd.campaigns
+    })
+      .then(res => {
+        commit(types.ADD_CAMPAIGN_TO_TIKTOK)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
 }

@@ -34,7 +34,6 @@ import CampaignPresetModal from './CampaignPresetModal.vue'
 import HamburgerMenu from '../common/HamburgerMenu.vue'
 import campaignFields from '../../data/campaignField'
 import * as types from '../../store/types'
-import TikTokADS3 from '../../rest_api/TikTokADS3'
 
 const store = useStore()
 
@@ -66,22 +65,6 @@ function addNewPreset() {
 }
 
 function addToTikTok() {
-  store.state.campaignAdd.campaigns.map((item) => {
-    let Tk = new TikTokADS3({
-      ACCESS_TOKEN: "89a97d054966d74362288ef4b4933c2eb35502a5",
-      campaign_name: item.cell5,
-      campaign_type: item.cell10,
-      budget_mode: item.cell7,
-      budget: item.cell8,
-      start_time: item.cell56,
-      end_time: item.cell57,
-      optimization_goal: item.cell59,
-      billing_event: item.cell62,
-      bid: item.cell64,
-      app_id: item.cell3,
-    })
-  
-    Tk.createCampaign()
-  })
+  store.dispatch(types.ADD_CAMPAIGN_TO_TIKTOK)
 }
 </script>
