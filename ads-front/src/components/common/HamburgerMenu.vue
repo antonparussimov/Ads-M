@@ -66,7 +66,7 @@ function goToPage(index) {
   if (index == 0) {
     router.push('/')
   } else if(index == 1) {
-    router.push('/tik/perf/campaign')
+    router.push('/tik/perf')
   } else if(index == 2) {
     router.push('/tik/perf/campaign/add')
   } else if(index == 3) {
@@ -86,6 +86,7 @@ function goToPage(index) {
   width: 50px;
   height: 20px;
   cursor: pointer;
+  z-index: 999999;
 }
 
 /* .hamburger-menu span {

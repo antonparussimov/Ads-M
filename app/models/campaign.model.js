@@ -47,7 +47,16 @@ module.exports = (sequelize, Sequelize) => {
     },
     likes: {
       type: Sequelize.INTEGER,
-    }
+    },
+    tag1: {
+      type: Sequelize.STRING,
+    },
+    tag2: {
+      type: Sequelize.STRING,
+    },
+    tag3: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Campaign;

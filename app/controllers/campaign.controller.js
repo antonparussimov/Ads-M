@@ -171,31 +171,34 @@ exports.getCampaignFromTiktok = (req, res) => {
 
 exports.addCampaignToTiktok = (req, res) => {
   const campaigns = req.body.campaigns;
-  campaigns.map(item => {
-    axios
-      .post(
-        'https://ads.tiktok.com/open_api/v1.2/campaign/create/',
-        {
-          advertiser_id: '7128276846151483393',
-          budget_mode: item.cell7,
-          budget: item.cell8,
-          objective_type: item.cell10,
-          campaign_name: item.cell5,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Token': this.ACCESS_TOKEN,
+  console.log(campaigns[0]);
+  if(campaigns[0] != undefined) {
+    campaigns.map(item => {
+      axios
+        .post(
+          'https://ads.tiktok.com/open_api/v1.2/campaign/create/',
+          {
+            advertiser_id: '7128276846151483393',
+            budget_mode: item.cell7,
+            budget: item.cell8,
+            objective_type: item.cell10,
+            campaign_name: item.cell5,
           },
-        }
-      )
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => {
-        res.status(500).send({message: err.message});
-      })
-  });
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Token': this.ACCESS_TOKEN,
+            },
+          }
+        )
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    });
+  }
 
   res.send({
     message: 'success'

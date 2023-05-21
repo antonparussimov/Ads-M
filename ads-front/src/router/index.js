@@ -12,7 +12,7 @@ const routes = [
     component: () => import('/src/components/campaign/Campaign.vue'),
   },
   {
-    path: '/tik/perf/campaign/detail/:id',
+    path: '/tik/perf',
     name: 'CampaignDetail',
     component: () => import('/src/components/campaign/detail/CampaignDetail.vue')
   },

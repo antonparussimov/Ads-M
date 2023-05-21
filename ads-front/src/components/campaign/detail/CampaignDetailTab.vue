@@ -1,11 +1,10 @@
 <template>
   <v-card class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap items-center gap-y-4" variant="elevated">
-    <v-tabs class="w-full md:w-5/12">
-      <v-tab> バフォーマンス </v-tab>
-      <v-tab> オーディエンス </v-tab>
-    </v-tabs>
+    <div class="w-full md:w-1/2">
+      Campaigns Filter
+    </div>
 
-    <div class="w-full md:w-7/12 flex flex-wrap md:justify-end gap-4">
+    <div class="w-full md:w-1/2 flex flex-wrap md:justify-end gap-4">
       <input name="startDate" :value="startDate" @input.prevent="updateDate" type="date" placeholder="John Doe" class="block placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 w-44" />
       <input name="endDate" :value="endDate" @input.prevent="updateDate" type="date" placeholder="John Doe" class="block placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 w-44" />
     </div>
@@ -44,7 +43,7 @@ function updateDate(e) {
   }
 
   const payload = {
-    id: route.params.id,
+    id: 1,
     startDate: startDate.value,
     endDate: endDate.value
   }
