@@ -125,7 +125,7 @@ exports.getCampaignFromTiktok = (req, res) => {
         ]
         let option = {
           //primary_status      : 'STATUS_ALL',
-          start_date: 'latest_date',
+          start_date: latest_date,
           end_date: new Date(),
           advertiser_id: '7128276846151483393',
           fields: JSON.stringify(stat),
