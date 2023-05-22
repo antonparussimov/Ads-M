@@ -31,9 +31,10 @@ exports.findOne = (req, res) => {
   const endDate = req.body.endDate;
   let filterNames = req.body.filterNames;
   const result = {}
-  Campaign.findAll({
-    where: {
-      adId: id,
+  let where={}
+  if(filterNames[0] != undefined){
+    where = {
+      // adId: id,
       campaignName: {
         [Op.in]: filterNames
       },
@@ -42,6 +43,19 @@ exports.findOne = (req, res) => {
         [Op.gt]: new Date(startDate),
       },
     }
+  }
+  else{
+    where = {
+      // adId: id,
+      date: {
+        [Op.lt]: new Date(endDate),
+        [Op.gt]: new Date(startDate),
+      },
+    }
+  }
+
+  Campaign.findAll({
+    where: where
   })
     .then((data) => {
       result.campaignHistory = data;
@@ -210,8 +224,9 @@ const addCampaign = (data) => {
   const campaign = {
     campaignId: data.campaign_id,
     campaignName: data.campaign_name,
-    adId: data.advertiser_id
-    //add fields
+    adId: data.ad_id,
+    groupName: data.adgroup_name,
+    clicks: data.click_cnt,
   }
   
   Campaign.create(campaign)
