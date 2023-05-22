@@ -98,7 +98,7 @@ exports.getCampaignFromTiktok = (req, res) => {
     .then((data) => {
       let latest_date;
       if(data == null) {
-        latest_date = '0000-00-00';
+        latest_date = '2022-01-01';
       } else {
         latest_date = data.date;
       }
@@ -125,8 +125,8 @@ exports.getCampaignFromTiktok = (req, res) => {
         ]
         let option = {
           //primary_status      : 'STATUS_ALL',
-          start_date: '2022-08-30',
-          end_date: '2022-08-31',
+          start_date: 'latest_date',
+          end_date: new Date(),
           advertiser_id: '7128276846151483393',
           fields: JSON.stringify(stat),
           group_by: JSON.stringify(['STAT_GROUP_BY_FIELD_STAT_TIME', 'STAT_GROUP_BY_FIELD_ID']),
