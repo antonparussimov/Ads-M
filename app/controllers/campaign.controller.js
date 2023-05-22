@@ -65,13 +65,7 @@ exports.findOne = (req, res) => {
           'date',
           [Sequelize.fn('SUM', Sequelize.col('cost')), 'cost'],
         ],
-        where: {
-          campaignId: id,
-          date: {
-            [Op.lt]: new Date(endDate),
-            [Op.gt]: new Date(startDate),
-          },
-        },
+        where: where,
         order: [
           ['date', 'ASC']
         ],
