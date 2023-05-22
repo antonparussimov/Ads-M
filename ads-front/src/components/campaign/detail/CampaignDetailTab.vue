@@ -1,54 +1,33 @@
 <template>
-  <v-card class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap items-center gap-y-4" variant="elevated">
+  <div class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap items-center gap-y-4 bg-white rounded">
     <div class="w-full md:w-1/2">
       Campaigns Filter
     </div>
 
     <div class="w-full md:w-1/2 flex flex-wrap md:justify-end gap-4">
-      <input name="startDate" :value="startDate" @input.prevent="updateDate" type="date" placeholder="John Doe" class="block placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 w-44" />
-      <input name="endDate" :value="endDate" @input.prevent="updateDate" type="date" placeholder="John Doe" class="block placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 w-44" />
+      <VueDatePicker v-model="filterRanges" range format="yyyy-MM-dd"/>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import { format } from 'date-fns'
 
 const store = useStore()
 
-const route = useRoute()
-
-const startDate = ref(null)
-const endDate = ref(null)
-
-function updateDate(e) {
-  if(e.target.name == "startDate") {
-    startDate.value = e.target.value;
-  }else {
-    endDate.value = e.target.value;
-  }
-
-  if(startDate.value > endDate.value) {
-    if(e.target.name == "startDate") {
-      endDate.value = startDate.value
-    }else {
-      startDate.value = endDate.value
+const filterRanges = computed({
+  get: () => [store.state.campaignDetail.startDate, store.state.campaignDetail.endDate],
+  set: (value) => {
+    if(value.length == 2) {
+      let value1 = [];
+      value1[0] = format(value[0], 'yyyy-MM-dd')
+      value1[1] = format(value[1], 'yyyy-MM-dd')
+      store.dispatch('getCampaignDetail', value1)
     }
-  }
-
-  if(startDate.value == null || endDate.value == null) {
-    return;
-  }
-
-  const payload = {
-    id: 1,
-    startDate: startDate.value,
-    endDate: endDate.value
-  }
-  
-  store.dispatch('getCampaignDetail', payload)
-}
-
+  },
+})
 </script>

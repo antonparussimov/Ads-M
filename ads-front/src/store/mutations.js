@@ -22,6 +22,11 @@ export default {
     state.campaignDetail.endDate = payload
   },
 
+  updateFilterRanges(state, payload) {
+    state.campaignDetail.startDate = payload[0]
+    state.campaignDetail.endDate = payload[1]
+  },
+
   [types.CREATE_NEW_CAMPAIGN](state, payload) {
     state.campaignAdd.campaigns = [...state.campaignAdd.campaigns, payload]
   },

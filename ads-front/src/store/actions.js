@@ -24,10 +24,15 @@ export default {
       })
   },
 
-  getCampaignDetail ({ commit }, payload) {
-    commit('updateStartDate', payload.startDate)
-    commit('updateEndDate', payload.endDate)
-    axios.post(`${proxy}/campaigns/detail`, payload)
+  getCampaignDetail ({ state, commit }, payload) {
+    commit('updateStartDate', payload[0])
+    commit('updateEndDate', payload[1])
+    const payload1 = {
+      id: state.campaignDetail.id,
+      startDate: payload[0],
+      endDate: payload[1]
+    }
+    axios.post(`${proxy}/campaigns/detail`, payload1)
       .then(res => {
         commit('getCampaignDetail', res.data)
       })
