@@ -24,15 +24,21 @@ export default {
       })
   },
 
-  getCampaignDetail ({ state, commit }, payload) {
+  getCampaignDetail ({ dispatch, commit }, payload) {
     commit('updateStartDate', payload[0])
     commit('updateEndDate', payload[1])
-    const payload1 = {
+    dispatch('getCampaignDetailCommon')
+  },
+
+  getCampaignDetailCommon ({ state, commit }) {
+    const payload = {
       id: state.campaignDetail.id,
-      startDate: payload[0],
-      endDate: payload[1]
+      startDate: state.campaignDetail.startDate,
+      endDate: state.campaignDetail.endDate,
+      filterNames: state.campaignDetail.filterNames
     }
-    axios.post(`${proxy}/campaigns/detail`, payload1)
+
+    axios.post(`${proxy}/campaigns/detail`, payload)
       .then(res => {
         commit('getCampaignDetail', res.data)
       })
@@ -89,5 +95,15 @@ export default {
       .catch(err => {
         console.log(err)
       })
+  },
+
+  [types.ADD_FILTER_NAME] ({commit, dispatch}, paylod) {
+    commit(types.ADD_FILTER_NAME, paylod)
+    dispatch('getCampaignDetailCommon')
+  },
+
+  [types.REMOVE_FILTER_NAME] ({commit, dispatch}, paylod) {
+    commit(types.REMOVE_FILTER_NAME, paylod)
+    dispatch('getCampaignDetailCommon')
   },
 }

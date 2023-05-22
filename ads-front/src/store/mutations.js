@@ -74,4 +74,12 @@ export default {
   [types.ADD_CAMPAIGN_TO_TIKTOK] (state) {
     state.campaignAdd.campaigns = []
   },
+
+  [types.ADD_FILTER_NAME] (state, payload) {
+    state.campaignDetail.filterNames = [...state.campaignDetail.filterNames, payload]
+  },
+
+  [types.REMOVE_FILTER_NAME] (state, payload) {
+    state.campaignDetail.filterNames.splice(payload, 1)
+  },
 }

@@ -1,21 +1,39 @@
 <template>
-  <div class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap items-center gap-y-4 bg-white rounded">
-    <div class="w-full md:w-1/2">
-      Campaigns Filter
+  <div class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap justify-between items-center gap-y-4 bg-white rounded">
+    <div class="w-full md:w-auto flex">
+      <v-text-field label="Name" v-model="filterInput"  @keydown="handleKeyDown"></v-text-field>
+      <v-row align="center" justify="start" >
+        <v-col
+          v-for="(selection, i) in filterNames"
+          :key="i"
+          cols="auto"
+          class="py-1 pe-0"
+        >
+          <v-chip
+            :disabled="loading"
+            close
+            @click="removeFilterName(i)"
+          >
+            {{ selection }}
+            <v-icon end icon="mdi-close"></v-icon>
+          </v-chip>
+        </v-col>
+      </v-row>
     </div>
 
-    <div class="w-full md:w-1/2 flex flex-wrap md:justify-end gap-4">
+    <div class="w-64">
       <VueDatePicker v-model="filterRanges" range format="yyyy-MM-dd"/>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { format } from 'date-fns'
+import * as types from '../../../store/types'
 
 const store = useStore()
 
@@ -30,4 +48,21 @@ const filterRanges = computed({
     }
   },
 })
+
+const filterNames = computed(() => {
+  return store.state.campaignDetail.filterNames
+})
+
+const filterInput = ref('')
+
+function handleKeyDown(event) {
+  if (event.key === 'Enter') {
+    store.dispatch(types.ADD_FILTER_NAME, filterInput.value);
+    filterInput.value = ''
+  }
+}
+
+function removeFilterName(index) {
+  store.dispatch(types.REMOVE_FILTER_NAME, index)
+}
 </script>

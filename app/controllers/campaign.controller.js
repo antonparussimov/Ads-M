@@ -29,11 +29,15 @@ exports.findOne = (req, res) => {
   const id = req.body.id;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
+  const filterNames = req.body.filterNames;
 
   const result = {}
   Campaign.findAll({
     where: {
-      campaignId: id,
+      adId: id,
+      campaignName: {
+        [Op.in]: filterNames
+      },
       date: {
         [Op.lt]: new Date(endDate),
         [Op.gt]: new Date(startDate),
