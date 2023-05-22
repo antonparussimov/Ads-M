@@ -140,11 +140,9 @@ exports.getCampaignFromTiktok = (req, res) => {
           })
           .then((res) => {
             let addedCount = 0
-            console.log(res)
             if (res.data.data.list[0] != undefined) {
               //console.log(res.data)
               res.data.data.list.map((item) => {
-                console.log(item)
                 addCampaign(item)
               })
               addedCount = res.data.data.list.length
