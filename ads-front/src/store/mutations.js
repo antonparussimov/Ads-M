@@ -2,7 +2,7 @@ import * as types from './types'
 
 export default {
   getCampaignDetail(state, payload) {
-    state.campaignDetail.campaignHistory = payload.campaignHistory
+    state.campaignDetail.campaignHistory = payload.campaignHistory || []
     state.campaignDetail.chartData = payload.chartData
   },
 
