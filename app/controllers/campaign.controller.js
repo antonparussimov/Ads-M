@@ -29,8 +29,8 @@ exports.findOne = (req, res) => {
   const id = req.body.id;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
-  const filterNames = req.body.filterNames;
-
+  let filterNames = req.body.filterNames;
+  if(filterNames == null) filterNames = '';
   const result = {}
   Campaign.findAll({
     where: {

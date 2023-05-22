@@ -6,7 +6,7 @@ import mutations from './mutations'
 const state = {
   campaignList: [],
   campaignDetail: {
-    id: 1,
+    id: 7128276846151483393,
     startDate: '2023-01-01',
     endDate: '2023-01-01',
     selectedColumns: ['date', 'cost', 'costPerResult', 'cpc', 'impressions', 'ctr', 'clicks', 'resultRate', 'result', 'cpa', 'cvr', 'conversions', 'reach', 'costPer1000People', 'frequency'],
