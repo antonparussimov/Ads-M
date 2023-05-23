@@ -141,7 +141,7 @@ function getCampaignPerDay(curDate) {
         }))
           .then(() => {
             addedCount = res.data.data.list.length;
-            CampaignGettingHistory.create({ date: curDate, addCount: res.data.length })
+            CampaignGettingHistory.create({ date: format(curDate, 'yyyy-MM-dd'), addCount: res.data.length })
               .then(() => {
                 return addedCount;
               })
