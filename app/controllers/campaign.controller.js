@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { format } = require('date-fns');
 const db = require("../models");
 const Campaign = db.campaigns;
 const CampaignGettingHistory = db.campaignGettingHistory;
@@ -89,6 +90,75 @@ exports.findOne = (req, res) => {
     });
 };
 
+function getCampaignPerDay(curDate) {
+  let stat = [
+    'campaign_name',
+    'adgroup_id',
+    'adgroup_name',
+    'adgroup_id',
+    'ad_id',
+    'ad_name',
+    'ad_text',
+    'stat_cost',
+    'show_cnt',
+    'click_cnt',
+    'convert_cnt',
+    'time_attr_view',
+    'play_duration_2s',
+    'play_duration_6s',
+    'play_over',
+    'ad_like',
+  ]
+  let option = {
+    //primary_status      : 'STATUS_ALL',
+    start_date: format(curDate, 'yyyy-MM-dd'),
+    end_date: format(curDate, 'yyyy-MM-dd'),
+    advertiser_id: '7128276846151483393',
+    fields: JSON.stringify(stat),
+    group_by: JSON.stringify(['STAT_GROUP_BY_FIELD_STAT_TIME', 'STAT_GROUP_BY_FIELD_ID']),
+    time_granularity: 'STAT_TIME_GRANULARITY_DAILY', //'STAT_TIME_GRANULARITY_HOURLY'
+    page: 1,
+    page_size: 1000,
+  }
+  let params = ''
+  for (let key in option) {
+    params += key + '=' + option[key] + '&'
+  }
+  let url = encodeURI('https://ads.tiktok.com/open_api/v1.2/reports/ad/get/' + '?' + params)
+
+  axios
+    .get(url, {
+      headers: {
+        'Access-Token': 'e703d9339371aeb0144d9451123a94a3482c1e18',
+      },
+    })
+    .then((res) => {
+      let addedCount = 0
+      if (res.data.data.list[0] != undefined) {
+        //console.log(res.data)
+        Promise.all(res.data.data.list.map((item) => {
+          addCampaign(item)
+        }))
+          .then(() => {
+            addedCount = res.data.data.list.length;
+            CampaignGettingHistory.create({ date: curDate, addCount: res.data.length })
+              .then(() => {
+                return addedCount;
+              })
+              .catch(() => {
+                return false;
+              })
+          })
+          .catch(err => {
+            return false;
+          })
+      }
+    })
+    .catch((err) => {
+      return false;
+    });
+}
+
 exports.getCampaignFromTiktok = (req, res) => {
   CampaignGettingHistory.findOne({
     order: [
@@ -102,74 +172,19 @@ exports.getCampaignFromTiktok = (req, res) => {
       } else {
         latest_date = data.date;
       }
-
       // get campaigns from tiktok
-      try {
-        let stat = [
-          'campaign_name',
-          'adgroup_id',
-          'adgroup_name',
-          'adgroup_id',
-          'ad_id',
-          'ad_name',
-          'ad_text',
-          'stat_cost',
-          'show_cnt',
-          'click_cnt',
-          'convert_cnt',
-          'time_attr_view',
-          'play_duration_2s',
-          'play_duration_6s',
-          'play_over',
-          'ad_like',
-        ]
-        let option = {
-          //primary_status      : 'STATUS_ALL',
-          start_date: latest_date,
-          end_date: new Date(),
-          advertiser_id: '7128276846151483393',
-          fields: JSON.stringify(stat),
-          group_by: JSON.stringify(['STAT_GROUP_BY_FIELD_STAT_TIME', 'STAT_GROUP_BY_FIELD_ID']),
-          time_granularity: 'STAT_TIME_GRANULARITY_DAILY', //'STAT_TIME_GRANULARITY_HOURLY'
-          page: 1,
-          page_size: 1000,
-        }
-        let params = ''
-        for (let key in option) {
-          params += key + '=' + option[key] + '&'
-        }
-        let url = encodeURI('https://ads.tiktok.com/open_api/v1.2/reports/ad/get/' + '?' + params)
-        console.log(url)
-        axios
-          .get(url, {
-            headers: {
-              'Access-Token': 'e703d9339371aeb0144d9451123a94a3482c1e18',
-            },
-          })
-          .then((res) => {
-            let addedCount = 0
-            if (res.data.data.list[0] != undefined) {
-              //console.log(res.data)
-              res.data.data.list.map((item) => {
-                addCampaign(item)
-              })
-              addedCount = res.data.data.list.length
-
-              CampaignGettingHistory.create({ date: new Date(), addCount: res.data.length })
-            }
-
-            res.send({
-              result: addedCount,
-            })
-          })
-          .catch((err) => {
-            res.status(200).send({
-              message: 'tiktok api error',
-            });
-          });
-      } catch (error) {
-        console.error(error);
+      let promises = [];
+      for (let date = new Date(latest_date); date <= new Date(); date.setDate(date.getDate() + 1)) {
+        promises.push(
+          getCampaignPerDay(date)
+        )
       }
+
+      Promise.all(promises).then(() => {
+        res.send({
+          message: 'success'
+        })
+      });
     })
     .catch((err) => {
       res.status(500).json({
