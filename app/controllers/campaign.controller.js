@@ -111,8 +111,8 @@ function getCampaignPerDay(curDate) {
   ]
   let option = {
     //primary_status      : 'STATUS_ALL',
-    start_date: format(curDate, 'yyyy-MM-dd'),
-    end_date: format(curDate, 'yyyy-MM-dd'),
+    start_date: curDate,
+    end_date: curDate,
     advertiser_id: '7128276846151483393',
     fields: JSON.stringify(stat),
     group_by: JSON.stringify(['STAT_GROUP_BY_FIELD_STAT_TIME', 'STAT_GROUP_BY_FIELD_ID']),
@@ -135,13 +135,13 @@ function getCampaignPerDay(curDate) {
     .then((res) => {
       let addedCount = 0
       if (res.data.data.list[0] != undefined) {
-        //console.log(res.data)
+        // console.log(res.data.data.list);
         Promise.all(res.data.data.list.map((item) => {
           addCampaign(item)
         }))
           .then(() => {
             addedCount = res.data.data.list.length;
-            CampaignGettingHistory.create({ date: format(curDate, 'yyyy-MM-dd'), addCount: res.data.length })
+            CampaignGettingHistory.create({ date: curDate, addCount: res.data.length })
               .then(() => {
                 return addedCount;
               })
@@ -176,7 +176,7 @@ exports.getCampaignFromTiktok = (req, res) => {
       let promises = [];
       for (let date = new Date(latest_date); date <= new Date(); date.setDate(date.getDate() + 1)) {
         promises.push(
-          getCampaignPerDay(date)
+          getCampaignPerDay(format(date, 'yyyy-MM-dd'))
         )
       }
 
@@ -236,6 +236,7 @@ const addCampaign = (data) => {
     adId: data.ad_id,
     groupName: data.adgroup_name,
     clicks: data.click_cnt,
+    date: data.stat_datetime
   }
   
   Campaign.create(campaign)
