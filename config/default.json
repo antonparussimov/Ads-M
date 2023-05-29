@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://Amar:mongoDB@mevnstack-myne9.mongodb.net/MEVNstack?retryWrites=true&w=majority",
+  "jwtSecret": "Secret"
+}

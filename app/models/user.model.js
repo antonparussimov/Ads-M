@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     allowStatus: {
-      type: Sequelize.TINYINT,
+      type: Sequelize.SMALLINT,
       defaultValue: 0,
     }
   });

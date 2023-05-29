@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
-db.sequelize.sync({ force: true })
+db.sequelize.sync() //{ force: true }  >>>> drop the table if it already exists
   .then(() => {
     console.log("Synced db.");
     // seeder
@@ -27,18 +27,6 @@ db.sequelize.sync({ force: true })
     console.log("Failed to sync db: " + err.message);
   });
 
-// drop the table if it already exists
-// db.sequelize.sync({ force: true })
-//   .then(() => {
-//     console.log("Drop and re-sync db.");
-//     // seeder
-//     const campaignSeeder = require('./app/seeder/campaign.seeder');
-//     campaignSeeder();
-//   })
-//   .catch((err) => {
-//     console.log("Failed to sync db: " + err.message);
-//   });
-
 // simple route
 app.get("/", (req, res) => {
   res.json({message: `Server running on port ${PORT}`})
@@ -46,7 +34,8 @@ app.get("/", (req, res) => {
 
 require("./app/routes/campaign.routes")(app);
 require("./app/routes/campaignPresets.routes")(app);
-
+app.use("/api/user", require('./app/routes/users'));
+app.use("/api/auth", require('./app/routes/auth'));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
