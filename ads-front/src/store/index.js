@@ -2,6 +2,7 @@ import { createStore, createLogger } from 'vuex'
 import * as getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
+import auth from "./modules/auth";
 
 const state = {
   campaignList: [],
@@ -28,5 +29,8 @@ export default createStore({
   getters,
   actions,
   mutations,
+  modules: {
+    auth
+  },
   plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
 })

@@ -12,6 +12,15 @@
         @submit.prevent="SubmitForm"
       >
         <v-text-field
+          v-model="name"
+          :readonly="loading"
+          class="mb-2"
+          clearable
+          color="primary"
+          label="Name"
+        ></v-text-field>
+
+        <v-text-field
           v-model="email"
           :readonly="loading"
           class="mb-2"
@@ -27,6 +36,14 @@
           placeholder="Enter your password"
         ></v-text-field>
 
+        <v-text-field
+          v-model="confirm"
+          :readonly="loading"
+          clearable
+          label="Confirm"
+          placeholder="Confirm Password"
+        ></v-text-field>
+
         <br>
 
         <v-btn
@@ -38,7 +55,7 @@
           type="submit"
           variant="elevated"
         >
-          Sign In
+          Complete Registration
         </v-btn>
       </v-form>
     </v-card>
@@ -52,8 +69,10 @@ import { useStore } from 'vuex'
 /* state part */
 const store = useStore();
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
+const confirm = ref('')
 const loading = ref(false)
 const form = ref(false)
 
@@ -70,11 +89,17 @@ function SubmitForm() {
 
   setTimeout(() => (loading.value = false), 2000)
 
-  let user = {
-    email: email.value,
-    password: password.value
-  };
-  store.dispatch('LoginUser', user);
+  if (password.value != confirm.value) {
+    store.dispatch('setAlert', "Confirm Password and Password do not match");
+  } else {
+    let user = {
+      name: name.value,
+      email: email.value,
+      password: password.value
+    };
+    console.log(user);
+    store.dispatch('registerUser', user);
+  }
 }
 
 /** lifecycle */
