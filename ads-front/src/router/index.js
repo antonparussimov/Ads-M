@@ -14,13 +14,23 @@ const routes = [
   {
     path: '/tik/perf',
     name: 'CampaignDetail',
-    component: () => import('/src/components/campaign/detail/CampaignDetail.vue')
+    component: () => import('/src/components/campaign/detail/CampaignDetail.vue'),
   },
   {
     path: '/tik/perf/campaign/add',
     name: 'CampaignAdd',
-    component: () => import('/src/components/campaign_add/CampaignAddView.vue')
-  }
+    component: () => import('/src/components/campaign_add/CampaignAddView.vue'),
+  },
+  { 
+    path: '/login', 
+    name: 'login', 
+    component: Login 
+  },
+  { 
+    path: '/register', 
+    name: 'register', 
+    component: Register 
+  },
 ]
 
 const router = createRouter({
