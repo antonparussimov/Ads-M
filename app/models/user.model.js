@@ -1,10 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
-    recId: {
-      type: Sequelize.BIGINT,
-      autoIncrement: true,
-      primaryKey: true
-    },
     name: {
       type: Sequelize.STRING,
     },
