@@ -1,3 +1,6 @@
+//proxy base url
+export const PROXY_URL = 'http://localhost:5000/api';
+
 //campaign types const
 export const CHANGE_TAB = 'CHANGE_TAB';
 export const FILTER_NAME_CHANGE = 'FILTER_NAME_CHANGE';
