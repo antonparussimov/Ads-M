@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as types from './types'
 
-const proxy = 'http://localhost:5000/api'
+const proxy = types.PROXY_URL
 
 export default {
   getCampaigns ({ commit }) {
