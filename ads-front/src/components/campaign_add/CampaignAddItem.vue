@@ -22,15 +22,15 @@
 </template>
 
 <script setup>
-const props = defineProps({
-  campaign: Object,
-  index: Number,
-})
-
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import campaignField from '../../data/campaignField';
 import * as types from '../../store/types'
+
+const props = defineProps({
+  campaign: Object,
+  index: Number,
+})
 
 const store = useStore()
 
