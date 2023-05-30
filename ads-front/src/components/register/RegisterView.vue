@@ -34,6 +34,7 @@
           clearable
           label="Password"
           placeholder="Enter your password"
+          type="password"
         ></v-text-field>
 
         <v-text-field
@@ -42,6 +43,7 @@
           clearable
           label="Confirm"
           placeholder="Confirm Password"
+          type="password"
         ></v-text-field>
 
         <br>
@@ -63,17 +65,22 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 /* state part */
+const router = useRouter()
+
 const store = useStore();
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const confirm = ref('')
-const loading = ref(false)
+const loading = computed(() => {
+  return store.state.auth.loading
+})
 const form = ref(false)
 
 const Errors = computed(() => {
@@ -87,8 +94,6 @@ function SubmitForm() {
 
   loading.value = true
 
-  setTimeout(() => (loading.value = false), 2000)
-
   if (password.value != confirm.value) {
     store.dispatch('setAlert', "Confirm Password and Password do not match");
   } else {
@@ -97,7 +102,7 @@ function SubmitForm() {
       email: email.value,
       password: password.value
     };
-    console.log(user);
+
     store.dispatch('registerUser', user);
   }
 }
@@ -105,6 +110,14 @@ function SubmitForm() {
 /** lifecycle */
 onMounted(() => {
   store.commit('ClearAlert');
+})
+
+watch(loading, async (newLoading, oldLoading) => {
+  if(newLoading == false && oldLoading == true) {
+    if(localStorage.token) {
+      router.push('/')
+    }
+  }
 })
 </script>
 

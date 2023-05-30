@@ -25,6 +25,7 @@
           clearable
           label="Password"
           placeholder="Enter your password"
+          type="password"
         ></v-text-field>
 
         <br>
@@ -46,19 +47,25 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 /* state part */
+const router = useRouter()
+
 const store = useStore();
 
 const email = ref('')
 const password = ref('')
-const loading = ref(false)
 const form = ref(false)
 
 const Errors = computed(() => {
   return store.getters.Errors
+})
+
+const loading = computed(() => {
+  return store.state.auth.loading
 })
 
 /** event listen */
@@ -67,8 +74,6 @@ function SubmitForm() {
   if (!form.value) return
 
   loading.value = true
-
-  setTimeout(() => (loading.value = false), 2000)
 
   let user = {
     email: email.value,
@@ -80,6 +85,14 @@ function SubmitForm() {
 /** lifecycle */
 onMounted(() => {
   store.commit('ClearAlert');
+})
+
+watch(loading, async (newLoading, oldLoading) => {
+  if(newLoading == false && oldLoading == true) {
+    if(localStorage.token) {
+      router.push('/')
+    }
+  }
 })
 </script>
 

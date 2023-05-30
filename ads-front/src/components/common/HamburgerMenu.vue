@@ -55,6 +55,7 @@ const items = ref([
   { title: 'Campaigns' }, 
   { title: 'Add Campaign' }, 
   { title: 'データを更新する' },
+  { title: 'logout' }, 
 ])
 
 function toggleMenu() {
@@ -71,6 +72,9 @@ function goToPage(index) {
     router.push('/tik/perf/campaign/add')
   } else if(index == 3) {
     store.dispatch(types.GET_CAPAIGN_FROM_TIKTOK)
+  } else if(index == 4) {
+    store.commit('Logout')
+    router.push('/login')
   }
 }
 </script>
