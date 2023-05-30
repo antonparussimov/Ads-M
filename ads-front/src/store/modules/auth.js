@@ -3,12 +3,10 @@ import setAuthToken from "../../utils/setAuthToken";
 import { useRouter } from 'vue-router'
 import * as types from '../types'
 
-const router = useRouter()
-
 const proxy = types.PROXY_URL
 
 const state = {
-  user: "",
+  user: null,
   Auth: false,
   loading: false,
   error: null,
@@ -22,31 +20,33 @@ const getters = {
 
 const actions = {
   async registerUser({ dispatch, commit }, user) {
-    try {
-      const response = await axios.post(
-        `${proxy}/users`,
+    commit('loadingTrue')
+    axios
+      .post(
+        `${proxy}/user`,
         user,
         {
           headers: {
             "Content-Type": "application/json"
           }
         }
-      );
-      localStorage.setItem("token", response.data.token);
-      commit("userAdded", response.data.token);
-      await dispatch("loadUser");
-    } catch (err) {
-      if (err.response.data.msg) {
+      )
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
+        commit('loadingFalse')
+        commit("userAdded", res.data.token);
+        dispatch("loadUser");
+      })
+      .catch(err => {
+        commit('loadingFalse')
         commit("Alert", err.response.data.msg);
-      } else {
-        commit("Alert", err.response.data.errors[0].msg);
-      }
-    }
+      })
   },
 
-  async LoginUser({ dispatch, commit }, user) {
-    try {
-      const response = await axios.post(
+  LoginUser({ dispatch, commit }, user) {
+    commit('loadingTrue')
+    axios
+      .post(
         `${proxy}/auth`,
         user,
         {
@@ -54,32 +54,33 @@ const actions = {
             "Content-Type": "application/json"
           }
         }
-      );
-      localStorage.setItem("token", response.data.token);
-      commit("loggedIN", response.data.token);
-      await dispatch("loadUser");
-    } catch (err) {
-      if (err.response.data.msg) {
+      )
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
+        commit('loadingFalse')
+        commit("loggedIN", res.data.token);
+        dispatch("loadUser");
+      })
+      .catch(err => {
+        commit('loadingFalse')
         commit("Alert", err.response.data.msg);
-      } else {
-        commit("Alert", err.response.data.errors[0].msg);
-      }
-    }
+      })
   },
 
   async loadUser({ commit }) {
+    const router = useRouter()
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
-    try {
-      const res = await axios.get(`${proxy}/auth`);
-      commit("setUser", res.data);
-      router.push({ path: "/dashboard" }).catch(() => {});
-    } catch (err) {
-      //vm.$router.push({ path: "/login" });
-      router.go(-1);
-      commit("Alert", err.response.data.msg);
-    }
+
+    axios
+      .get(`${proxy}/auth`)
+      .then(res => {
+        commit("setUser", res.data);
+      })
+      .catch(err => {
+        commit("Alert", err.msg);
+      })
   },
 
   setAlert({ commit }, error) {
@@ -95,12 +96,14 @@ const mutations = {
     state.token = token;
   },
   setUser: (state, user) => {
-    (state.Auth = true), (state.user = user);
+    state.Auth = true
+    state.user = user
   },
   Logout: state => {
-    router.push({ path: "/login" });
     localStorage.removeItem("token");
-    (state.Auth = false), (state.user = {}), (state.token = null);
+    state.Auth = false
+    state.user = {}
+    state.token = null
   },
   Alert: (state, error) => {
     localStorage.removeItem("token");
@@ -113,6 +116,12 @@ const mutations = {
       }.bind(this),
       5000
     );
+  },
+  loadingTrue: state => {
+    state.loading = true
+  },
+  loadingFalse: state => {
+    state.loading = false
   },
   ClearAlert: state => (state.error = null)
 };

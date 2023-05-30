@@ -9,7 +9,7 @@ const db = require('../models');
 const Op = db.Sequelize.Op;
 const User = db.user;
 
-// @route       POST api/ users
+// @route       POST api/user
 // @desc        Register a user
 // @access      Public
 router.post(
@@ -27,24 +27,28 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ msg: errors.array()[0].msg });
     }
     const { name, email, password } = req.body;
     try {
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ 
+        where: {
+          email: email
+        }
+      });
       if (user) {
         return res.status(400).json({ msg: "User Already Exists" });
       }
 
-      user = new User({
-        name,
-        email,
-        password
-      });
+      user = {
+        name: name,
+        email: email,
+        password: password
+      };
 
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
-      await User.create(user);
+      user = await User.create(user);
 
       const payload = {
         user: {
@@ -63,8 +67,7 @@ router.post(
         }
       );
     } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send({message: "Server Error"});
     }
   }
 );

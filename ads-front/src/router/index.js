@@ -5,6 +5,7 @@ const routes = [
     path: '/',
     name: 'Dashboard',
     component: () => import('/src/components/dashboard/Dashboard.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/tik/perf/campaign',
@@ -36,6 +37,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.token) {
+      next({ name: 'login' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
