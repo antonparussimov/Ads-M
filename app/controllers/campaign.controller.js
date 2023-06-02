@@ -90,7 +90,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-function getCampaignPerDay(curDate) {
+async function getCampaignPerDay(curDate) {
   let stat = [
     'campaign_name',
     'adgroup_id',
@@ -126,7 +126,7 @@ function getCampaignPerDay(curDate) {
   }
   let url = encodeURI('https://ads.tiktok.com/open_api/v1.2/reports/ad/get/' + '?' + params)
 
-  axios
+  await axios
     .get(url, {
       headers: {
         'Access-Token': 'e703d9339371aeb0144d9451123a94a3482c1e18',
@@ -159,38 +159,32 @@ function getCampaignPerDay(curDate) {
     });
 }
 
-exports.getCampaignFromTiktok = (req, res) => {
-  CampaignGettingHistory.findOne({
-    order: [
-      ['date', 'DESC']
-    ]
-  })
-    .then((data) => {
-      let latest_date;
-      if(data == null) {
-        latest_date = '2022-01-01';
-      } else {
-        latest_date = data.date;
-      }
-      // get campaigns from tiktok
-      let promises = [];
-      for (let date = new Date(latest_date); date <= new Date(); date.setDate(date.getDate() + 1)) {
-        promises.push(
-          getCampaignPerDay(format(date, 'yyyy-MM-dd'))
-        )
-      }
+exports.getCampaignFromTiktok = async (req, res) => {
+  try {
+    let latest_date = await CampaignGettingHistory.findOne({
+      order: [
+        ['date', 'DESC']
+      ]
+    });
+  
+    if(!latest_date) {
+      latest_date = '2022-01-01'
+    } else {
+      latest_date = latest_date.date;
+    }
+  
+    for (let date = new Date(latest_date); date <= new Date(); date.setDate(date.getDate() + 1)) {
+      await getCampaignPerDay(format(date, 'yyyy-MM-dd'));
+    }
 
-      Promise.all(promises).then(() => {
-        res.send({
-          message: 'success'
-        })
-      });
+    res.send({
+      message: 'success'
     })
-    .catch((err) => {
-      res.status(500).json({
-        message: err.message
-      })
+  } catch (error) {
+    res.status(500).json({
+      message: err.message
     })
+  }
 }
 
 exports.addCampaignToTiktok = (req, res) => {
