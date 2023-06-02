@@ -232,7 +232,8 @@ const addCampaign = (data) => {
     adId: data.ad_id,
     groupName: data.adgroup_name,
     clicks: data.click_cnt,
-    date: data.stat_datetime
+    date: data.stat_datetime,
+    cost: data.start_cost,
   }
   
   Campaign.create(campaign)
