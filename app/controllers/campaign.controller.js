@@ -91,6 +91,7 @@ exports.findOne = (req, res) => {
 };
 
 async function getCampaignPerDay(curDate) {
+  console.log('call getCampaignPerDay function>>', curDate);
   let stat = [
     'campaign_name',
     'adgroup_id',
@@ -143,6 +144,7 @@ async function getCampaignPerDay(curDate) {
             addedCount = res.data.data.list.length;
             CampaignGettingHistory.create({ date: curDate, addCount: res.data.length })
               .then(() => {
+                console.log(curDate, '>> add campaigns of ', res.data.data.list.length);
                 return addedCount;
               })
               .catch(() => {
