@@ -1,44 +1,48 @@
 <template>
   <v-card class="m-2 mt-0 md:m-5 md:mt-0 flex flex-wrap" variant="elevated">
-    <div class="flex flex-wrap gap-4 w-full lg:w-1/3">
-      <AnalysisComponent title="合計給果" :val="totalCost" unit="" />
-      <AnalysisComponent title="結果の申ッ" val=0 unit="JPY" />
+    <div class="flex flex-wrap gap-4 w-full lg:w-2/3">
       <AnalysisComponent title="総コスト" :val="totalCost" unit="JPY" />
-    </div>
-
-    <div class="flex flex-wrap gap-4 w-full lg:w-2/3 lg:justify-end">
-      <AnalysisComponent title="インプレツション" val=0 unit="" />
-      <AnalysisComponent title="クリック" :val="clicks" unit="" />
+      <AnalysisComponent title="imp" :val="views" unit="" />
+      <AnalysisComponent title="clicks" :val="clicks" unit="" />
       <AnalysisComponent title="CPC" :val="cpc" unit="JPY" />
       <AnalysisComponent title="CTR" :val="ctr" unit="%" />
       <AnalysisComponent title="CV" :val="cv" unit="" />
       <AnalysisComponent title="CPA" :val="cpa" unit="JPY" />
       <AnalysisComponent title="CVR" :val="cvr" unit="%" />
     </div>
+
+    <div class="flex flex-wrap gap-4 w-full lg:w-2/3 lg:justify-end"></div>
   </v-card>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import AnalysisComponent from './AnalysisComponent.vue';
+import AnalysisComponent from './AnalysisComponent.vue'
 
 const store = useStore()
-
+store.dispatch('getCampaignDetail', [store.state.campaignDetail.startDate, store.state.campaignDetail.endDate])
 const totalCost = computed(() => {
   return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cost, 0.0)
 })
 
+const views = computed(() => {
+  return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.views, 0.0)
+})
 const clicks = computed(() => {
   return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.clicks, 0.0)
 })
 
 const cpc = computed(() => {
-  return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cost/item.clicks, 0.0).toFixed(2)
+  const clicks = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.clicks, 0.0)
+  const totalCost = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cost, 0.0)
+  return (totalCost / clicks).toFixed(0)
 })
 
 const ctr = computed(() => {
-  return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.clicks/item.views, 0.0).toFixed(2)
+  const clicks = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.clicks, 0.0)
+  const views = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.views, 0.0)
+  return ((clicks / views) * 100).toFixed(2)
 })
 
 const cv = computed(() => {
@@ -46,10 +50,14 @@ const cv = computed(() => {
 })
 
 const cpa = computed(() => {
-  return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cost/item.cv, 0.0).toFixed(2)
+  const cv = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cv, 0.0)
+  const totalCost = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cost, 0.0)
+  return (totalCost / cv).toFixed(0)
 })
 
 const cvr = computed(() => {
-  return store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cv/item.clicks, 0.0).toFixed(2)
+  const cv = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.cv, 0.0)
+  const clicks = store.state.campaignDetail.campaignHistory.reduce((total, item) => total + item.clicks, 0.0)
+  return ((cv / clicks) * 100).toFixed(2)
 })
 </script>
