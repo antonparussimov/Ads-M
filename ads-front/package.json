@@ -9,6 +9,8 @@
     "prettier": "prettier --write \"src/**/*.{js,vue}\""
   },
   "dependencies": {
+    "@coreui/vue": "^4.8.1",
+    "@vuepic/vue-datepicker": "^5.1.2",
     "apexcharts": "^3.40.0",
     "axios": "^1.3.6",
     "chart.js": "^4.2.1",
@@ -20,7 +22,10 @@
     "vue-apexcharts": "^1.6.2",
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.1.6",
+    "vue-time-date-range-picker": "^2.1.1",
+    "vue-time-date-range-picker-vue3": "^1.4.17",
     "vue3-apexcharts": "^1.4.1",
+    "vue3-date-time-picker": "^2.8.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
@@ -34,3 +39,5 @@
     "vuetify": "^3.1.16"
   }
 }
+
+

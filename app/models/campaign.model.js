@@ -10,13 +10,13 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.NOW
     },
     campaignId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.BIGINT,
     },
     campaignName: {
       type: Sequelize.STRING,
     },
     campaignGroupId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.BIGINT
     },
     groupName: {
       type: Sequelize.STRING,
@@ -47,7 +47,16 @@ module.exports = (sequelize, Sequelize) => {
     },
     likes: {
       type: Sequelize.INTEGER,
-    }
+    },
+    tag1: {
+      type: Sequelize.STRING,
+    },
+    tag2: {
+      type: Sequelize.STRING,
+    },
+    tag3: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Campaign;

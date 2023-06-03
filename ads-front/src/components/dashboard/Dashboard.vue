@@ -1,48 +1,53 @@
 <template>
-  <div class="w-full bg-gray-200 p-0">
-    <div class="flex flex-wrap sm:flex-wrap md:flex-nowrap p-5 gap-4 w-full">
-      <div class="flex flex-col w-full md:w-1/3 bg-white p-3 rounded-md">
-        <div class="flex justify-between items-center w-full">
-          <h3>今日の消化金額</h3>
-          <button
-            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
-            支払い
-          </button>
-        </div>
-
-        <div class="pl-10">
-          <div class="flex items-end mt-3">
-            <p class="text-2xl">129129843</p>
-            <span class="text-xs pl-0.5">JPY</span>
+  <HamburgerMenu />
+  <div class="bg-gray-200 p-0">
+    <div class="flex flex-wrap p-5 gap-y-4">
+      <div class="w-full md:w-1/3">
+        <div class="flex flex-col bg-white p-3 rounded-md h-36">
+          <div class="flex justify-between items-center w-full">
+            <h3>今日の消化金額</h3>
+            <button
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              支払い
+            </button>
           </div>
-          <p class="text-xs mt-5">使用可能 0 JPY</p>
+  
+          <div class="pl-10">
+            <div class="flex items-end mt-3">
+              <p class="text-2xl">129129843</p>
+              <span class="text-xs pl-0.5">JPY</span>
+            </div>
+            <p class="text-xs mt-5">使用可能 0 JPY</p>
+          </div>
         </div>
       </div>
 
-      <div class="flex flex-col w-full md:w-2/3 bg-white p-3 rounded-md">
-        <h3 class="py-2">広告セットのステータス</h3>
+      <div class="w-full md:w-2/3 md:pl-4">
+        <div class="flex flex-col bg-white p-3 rounded-md h-36">
+          <h3 class="py-2">広告セットのステータス</h3>
 
-        <div class="flex">
-          <div
-            class="flex flex-col w-1/3 items-align justify-center text-center"
-          >
-            <p class="text-blue-600 text-3xl">80</p>
-            <p>配信中</p>
-          </div>
+          <div class="flex">
+            <div
+              class="flex flex-col w-1/3 items-align justify-center text-center"
+            >
+              <p class="text-blue-600 text-3xl">80</p>
+              <p>配信中</p>
+            </div>
 
-          <div
-            class="flex flex-col w-1/3 items-align justify-center text-center"
-          >
-            <p class="text-red-500 text-3xl">80</p>
-            <p>不ぬ迅</p>
-          </div>
+            <div
+              class="flex flex-col w-1/3 items-align justify-center text-center"
+            >
+              <p class="text-red-500 text-3xl">80</p>
+              <p>不ぬ迅</p>
+            </div>
 
-          <div
-            class="flex flex-col w-1/3 items-align justify-center text-center"
-          >
-            <p class="text-3xl">80</p>
-            <p>配信中</p>
+            <div
+              class="flex flex-col w-1/3 items-align justify-center text-center"
+            >
+              <p class="text-3xl">80</p>
+              <p>配信中</p>
+            </div>
           </div>
         </div>
       </div>
@@ -194,4 +199,5 @@
 
 <script setup>
 import Chart from './Chart.vue'
+import HamburgerMenu from '../common/HamburgerMenu.vue'
 </script>

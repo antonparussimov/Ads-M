@@ -1,55 +1,68 @@
 <template>
-  <v-card class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap items-center gap-y-4" variant="elevated">
-    <v-tabs class="w-full md:w-5/12">
-      <v-tab> バフォーマンス </v-tab>
-      <v-tab> オーディエンス </v-tab>
-    </v-tabs>
-
-    <div class="w-full md:w-7/12 flex flex-wrap md:justify-end gap-4">
-      <input name="startDate" :value="startDate" @input.prevent="updateDate" type="date" placeholder="John Doe" class="block placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 w-44" />
-      <input name="endDate" :value="endDate" @input.prevent="updateDate" type="date" placeholder="John Doe" class="block placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 w-44" />
+  <div class="m-2 p-2 md:m-5 md:p-4 flex flex-wrap justify-between items-center gap-y-4 bg-white rounded">
+    <div class="w-full md:w-auto flex">
+      <v-text-field label="Name" v-model="filterInput"  @keydown="handleKeyDown"></v-text-field>
+      <v-row align="center" justify="start" >
+        <v-col
+          v-for="(selection, i) in filterNames"
+          :key="i"
+          cols="auto"
+          class="py-1 pe-0"
+        >
+          <v-chip
+            :disabled="loading"
+            close
+            @click="removeFilterName(i)"
+          >
+            {{ selection }}
+            <v-icon end icon="mdi-close"></v-icon>
+          </v-chip>
+        </v-col>
+      </v-row>
     </div>
-  </v-card>
+
+    <div class="w-64">
+      <VueDatePicker v-model="filterRanges" range format="yyyy-MM-dd"/>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import { format } from 'date-fns'
+import * as types from '../../../store/types'
 
 const store = useStore()
 
-const route = useRoute()
-
-const startDate = ref(null)
-const endDate = ref(null)
-
-function updateDate(e) {
-  if(e.target.name == "startDate") {
-    startDate.value = e.target.value;
-  }else {
-    endDate.value = e.target.value;
-  }
-
-  if(startDate.value > endDate.value) {
-    if(e.target.name == "startDate") {
-      endDate.value = startDate.value
-    }else {
-      startDate.value = endDate.value
+const filterRanges = computed({
+  get: () => [store.state.campaignDetail.startDate, store.state.campaignDetail.endDate],
+  set: (value) => {
+    if(value.length == 2) {
+      let value1 = [];
+      value1[0] = format(value[0], 'yyyy-MM-dd')
+      value1[1] = format(value[1], 'yyyy-MM-dd')
+      store.dispatch('getCampaignDetail', value1)
     }
-  }
+  },
+})
 
-  if(startDate.value == null || endDate.value == null) {
-    return;
-  }
+const filterNames = computed(() => {
+  return store.state.campaignDetail.filterNames
+})
 
-  const payload = {
-    id: route.params.id,
-    startDate: startDate.value,
-    endDate: endDate.value
+const filterInput = ref('')
+
+function handleKeyDown(event) {
+  if (event.key === 'Enter') {
+    store.dispatch(types.ADD_FILTER_NAME, filterInput.value);
+    filterInput.value = ''
   }
-  
-  store.dispatch('getCampaignDetail', payload)
 }
 
+function removeFilterName(index) {
+  store.dispatch(types.REMOVE_FILTER_NAME, index)
+}
 </script>
