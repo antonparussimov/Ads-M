@@ -31,55 +31,55 @@ export default {
     state.campaignAdd.campaigns = [...state.campaignAdd.campaigns, payload]
   },
 
-  [types.CHANGE_NEW_CAMPAIGN_ATTR] (state, payload) {
+  [types.CHANGE_NEW_CAMPAIGN_ATTR](state, payload) {
     state.campaignAdd.campaigns[payload.index][payload.key] = payload.value
   },
 
-  [types.ChANGE_NEW_SELECTABLE] (state, payload) {
+  [types.ChANGE_NEW_SELECTABLE](state, payload) {
     state.campaignAdd.selectedCampaigns = payload
   },
 
-  [types.REVERSE_PRESET_SELECTABLE] (state) {
+  [types.REVERSE_PRESET_SELECTABLE](state) {
     state.campaignAdd.showPresetSelectable = !state.campaignAdd.showPresetSelectable
   },
 
-  [types.ADD_NEW_PRESET] (state, payload) {
+  [types.ADD_NEW_PRESET](state, payload) {
     state.campaignAdd.presets = payload
   },
 
-  [types.CHANGE_NEW_CAMPAIGN_TITLE] (state, payload) {
+  [types.CHANGE_NEW_CAMPAIGN_TITLE](state, payload) {
     state.campaignAdd.campaigns[payload.index].title = payload.title
   },
 
-  [types.GET_PRESETS] (state, payload) {
+  [types.GET_PRESETS](state, payload) {
     state.campaignAdd.presets = payload
   },
 
-  [types.ADD_NEW_CAMPAIGN_FROM_PRESET] (state, payload) {
-    let ret = Object.entries(state.campaignAdd.presets[payload]);
+  [types.ADD_NEW_CAMPAIGN_FROM_PRESET](state, payload) {
+    let ret = Object.entries(state.campaignAdd.presets[payload])
 
-    ret = ret.filter(([key, value]) => (key.includes('cell') || key == 'title'));
+    ret = ret.filter(([key, value]) => key.includes('cell') || key == 'title')
     ret = Object.fromEntries(ret)
     state.campaignAdd.campaigns = [...state.campaignAdd.campaigns, ret]
   },
 
-  [types.GET_CAPAIGN_FROM_TIKTOK] (state) {
+  [types.GET_CAPAIGN_FROM_TIKTOK](state) {
     state.campaignGettingFlag = true
   },
 
-  [types.GETED_CAPAIGN_FROM_TIKTOK] (state) {
+  [types.GETED_CAPAIGN_FROM_TIKTOK](state) {
     state.campaignGettingFlag = false
   },
 
-  [types.ADD_CAMPAIGN_TO_TIKTOK] (state) {
+  [types.ADD_CAMPAIGN_TO_TIKTOK](state) {
     state.campaignAdd.campaigns = []
   },
 
-  [types.ADD_FILTER_NAME] (state, payload) {
+  [types.ADD_FILTER_NAME](state, payload) {
     state.campaignDetail.filterNames = [...state.campaignDetail.filterNames, payload]
   },
 
-  [types.REMOVE_FILTER_NAME] (state, payload) {
+  [types.REMOVE_FILTER_NAME](state, payload) {
     state.campaignDetail.filterNames.splice(payload, 1)
   },
 }
