@@ -2,15 +2,34 @@ import { createStore, createLogger } from 'vuex'
 import * as getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
-import auth from "./modules/auth";
+import auth from './modules/auth'
 
 const state = {
   campaignList: [],
   campaignDetail: {
     id: 7128276846151483393,
-    startDate: '2022-01-01',
-    endDate: '2022-01-01',
-    selectedColumns: ['date', 'cost', 'costPerResult', 'cpc', 'impressions', 'ctr', 'clicks', 'resultRate', 'result', 'cpa', 'cvr', 'conversions', 'reach', 'costPer1000People', 'frequency'],
+    startDate: '2022-07-01',
+    endDate: '2022-12-01',
+    selectedColumns: [
+      'date',
+      'campaignName',
+      'groupName',
+      'adName',
+      'cost',
+      'costPerResult',
+      'cpc',
+      'impressions',
+      'ctr',
+      'clicks',
+      'resultRate',
+      'result',
+      'cpa',
+      'cvr',
+      'conversions',
+      // 'reach',
+      'cpm',
+      // 'frequency',
+    ],
     campaignHistory: [],
     chartData: [],
     filterNames: [],
@@ -30,7 +49,7 @@ export default createStore({
   actions,
   mutations,
   modules: {
-    auth
+    auth,
   },
   plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
 })
