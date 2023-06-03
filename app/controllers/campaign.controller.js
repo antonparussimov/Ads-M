@@ -58,7 +58,13 @@ exports.findOne = (req, res) => {
       result.campaignHistory = data
 
       Campaign.findAll({
-        attributes: ['date', [Sequelize.fn('SUM', Sequelize.col('cost')), 'cost']],
+        attributes: [
+          'date',
+          [Sequelize.fn('SUM', Sequelize.col('cost')), 'cost'],
+          [Sequelize.fn('SUM', Sequelize.col('views')), 'views'],
+          [Sequelize.fn('SUM', Sequelize.col('clicks')), 'clicks'],
+          [Sequelize.fn('SUM', Sequelize.col('cv')), 'cv'],
+        ],
         where: where,
         order: [['date', 'ASC']],
         group: 'date',
