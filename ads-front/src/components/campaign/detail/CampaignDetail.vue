@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col bg-gray-200">
     <CampaignDetailTab />
+    
     <CampaignAnalysis />
     <CampaignMainTab />
   </div>
