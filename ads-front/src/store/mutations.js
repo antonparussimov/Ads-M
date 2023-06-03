@@ -76,10 +76,10 @@ export default {
   },
 
   [types.ADD_FILTER_NAME](state, payload) {
-    state.campaignDetail.filterNames = [...state.campaignDetail.filterNames, payload]
+    state.campaignDetail.filterCampaignNames = [...state.campaignDetail.filterCampaignNames, payload]
   },
 
-  [types.REMOVE_FILTER_NAME](state, payload) {
-    state.campaignDetail.filterNames.splice(payload, 1)
+  [types.REMOVE_FILTER_CAMPAIGN_NAME](state, payload) {
+    state.campaignDetail.filterCampaignNames.splice(payload, 1)
   },
 }

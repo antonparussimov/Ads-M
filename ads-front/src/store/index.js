@@ -32,7 +32,7 @@ const state = {
     ],
     campaignHistory: [],
     chartData: [],
-    filterNames: [],
+    filterCampaignNames: [],
   },
   campaignAdd: {
     campaigns: [],

@@ -25,30 +25,33 @@ exports.findAll = (req, res) => {
 // Find a campaign data with id
 exports.findOne = (req, res) => {
   const id = req.body.id
-  const startDate = req.body.startDate
-  const endDate = req.body.endDate
-  let filterNames = req.body.filterNames
+  const startDate = new Date(req.body.startDate)
+  const endDate = new Date(req.body.endDate)
+  endDate.setDate(endDate.getDate() + 1)
+  let filterCampaignNames = req.body.filterCampaignNames
   const result = {}
   let where = {}
-  if (filterNames[0] != undefined) {
+  console.log(filterCampaignNames)
+  if (filterCampaignNames[0] != undefined) {
     where = {
       // adId: id,
       campaignName: {
-        [Op.in]: filterNames,
+        [Op.in]: filterCampaignNames,
       },
       date: {
-        [Op.lt]: new Date(endDate),
-        [Op.gt]: new Date(startDate),
+        [Op.lt]: endDate,
+        [Op.gte]: startDate,
       },
     }
   } else {
     where = {
       // adId: id,
       date: {
-        [Op.lt]: new Date(endDate),
-        [Op.gt]: new Date(startDate),
+        [Op.lt]: endDate,
+        [Op.gte]: startDate,
       },
     }
+    console.log(where)
   }
 
   Campaign.findAll({
@@ -56,7 +59,7 @@ exports.findOne = (req, res) => {
   })
     .then((data) => {
       result.campaignHistory = data
-
+      console.log(data)
       Campaign.findAll({
         attributes: [
           'date',
