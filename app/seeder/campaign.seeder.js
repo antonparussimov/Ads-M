@@ -1,10 +1,11 @@
-const db = require("../models");
+const db = require('../models')
 
-const Campaign = db.campaigns;
-const Op = db.Sequelize.Op;
+const Campaign = db.campaigns
+const Op = db.Sequelize.Op
 
 module.exports = () => {
   Campaign.count().then((count) => {
+    /*
     if (!count) {
       Campaign.create({
         date: "2022-08-22",
@@ -73,6 +74,6 @@ module.exports = () => {
     }else {
       console.log("Already inserted seed data");
       return;
-    }
-  });
-};
+    }*/
+  })
+}
