@@ -8,7 +8,16 @@
       </div>
     </div>
 
-    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="items" class="elevation-1" item-value="name" :footer-props="{ 'items-per-page-options': [50, 100, 500, -1] }">
+    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="items" class="elevation-1" item-value="name">
+      <template v-slot:item.campaignName="{ item }">
+        <td @click="campaignClicked(item)">{{ item.selectable.campaignName }}</td>
+      </template>
+      <template v-slot:item.date="{ item }">
+        <td @click="dateClicked(item)">{{ item.selectable.date }}</td>
+      </template>
+      <template v-slot:item.groupName="{ item }">
+        <td @click="groupClicked(item)">{{ item.selectable.groupName }}</td>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -16,6 +25,8 @@
 <script setup>
 import ColumnFilterModal from './ColumnFilterModal.vue'
 import ifError from '../../../../utils/ifError'
+
+import * as types from '../../../../store/types'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { format } from 'date-fns'
@@ -25,8 +36,10 @@ const store = useStore()
 const itemsPerPage = ref(50)
 const items = computed(() => {
   return store.state.campaignDetail.campaignHistory.map((item) => {
+    const date = new Date(item.date)
+    const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
     return {
-      date: format(new Date(item.date), 'MM/dd/yyyy'),
+      date: format(new Date(utcDate), 'yyyy/MM/dd'),
       campaignName: item.campaignName,
       groupName: item.groupName,
       adName: item.adName,
@@ -44,10 +57,24 @@ const items = computed(() => {
       reach: 0,
       cpm: '¥' + ifError((item.cost / item.views) * 1000, '-', 0),
       frequency: 0,
+      tag1: item.tag1,
     }
   })
 })
 
+const campaignClicked = (item) => {
+  store.dispatch(types.ADD_FILTER_CAMPAIGN_NAME, item.columns.campaignName)
+}
+const groupClicked = (item) => {
+  store.dispatch(types.ADD_FILTER_GROUP_NAME, item.columns.groupName)
+}
+const dateClicked = (item) => {
+  const date = new Date(item.columns.date)
+  let value1 = []
+  value1[0] = format(date, 'yyyy-MM-dd')
+  value1[1] = format(date, 'yyyy-MM-dd')
+  store.dispatch('getCampaignDetail', value1)
+}
 const headers = computed(() => {
   return allHeaders.filter((headerItem) => store.state.campaignDetail.selectedColumns.includes(headerItem.key))
 })
@@ -71,5 +98,6 @@ const allHeaders = [
   { title: 'Reach', key: 'reach', align: 'end' },
   { title: 'CPM', key: 'cpm', align: 'end' },
   { title: 'Frequency', key: 'frequency', align: 'end' },
+  { title: '媒体', key: 'tag1', align: 'end' },
 ]
 </script>
