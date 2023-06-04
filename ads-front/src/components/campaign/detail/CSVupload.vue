@@ -1,45 +1,47 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import * as types from '../../../store/types'
 
-// CSVファイルのヘッダー部を定義しておきます
-const headers = ref([
-        {
-          text: "Code",
-          align: "left",
-          sortable: false,
-          value: "code"
-        },
-        { text: "Name", align: "left", value: "name" },
-        { text: "WorkerType", align: "left", value: "workerType" }
-      ]);
-const workers = ref([]);
+const store = useStore()
 
-const fileChange = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      const workers = [];
 
-      const loadFunc = () => {
-        const lines = reader.result.split("\n");
-        lines.forEach(element => {
-          const workerData = element.split(",");
-          if (workerData.length != 3) return;
-          const worker = {
-            code: workerData[0],
-            name: workerData[1],
-            workerType: workerData[2]
-          };
-          workers.push(worker);
-        });
-        workers.value = workers;
-      };
-
-      // onloadはreadAsBinaryStringでファイルを読み込んだ後に実行されます.
-      reader.onload = loadFunc;
-
-      reader.readAsBinaryString(file);
-    }
+const outputList = ref([]);
+    const changeFile = async (e) => {
+      const [file] = e.target.files;
+      if (file) {
+        const reader = new FileReader();
+        reader.readAsText(file);
+        await new Promise((resolve) => (reader.onload = () => resolve()));
+        if (reader.result) {
+          const lineList = reader.result.split("\n");
+          console.log(lineList[0])
+          const keyList = lineList[0].split(",");
+          console.log(keyList)
+          const resultObj = lineList
+            .filter((_, index) => index !== 0)
+            .map((line) => {
+              const valueList = line.split(",");
+              const tmpObj = {};
+              keyList.map((key, index) => (tmpObj[key] = valueList[index]));
+              return tmpObj;
+            });
+          outputList.value = resultObj;
+          console.log(resultObj)
+          //add to database
+          store.dispatch(types.GET_CAMPAIGN_FROM_CSV,resultObj)
+          console.log("completed")
+        }
+      }
+    };
 
 </script>
 
+<template>
+      <div  class="w-full">
+
+  <v-file-input label="CSVファイルを読み込む" id="csvUpload" name="csvUpload" accept=".csv" @input="changeFile"/>
+      </div>
+  </template>

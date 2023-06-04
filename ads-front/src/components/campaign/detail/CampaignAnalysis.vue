@@ -1,6 +1,7 @@
 <template>
   <v-card class="m-2 mt-0 md:m-5 md:mt-0 flex flex-wrap" variant="elevated">
-    <div class="flex flex-wrap gap-4 w-full lg:w-2/3">
+    
+    <div class="flex flex-wrap gap-4 w-full ">
       <AnalysisComponent title="総コスト" :val="totalCost" unit="JPY" />
       <AnalysisComponent title="imp" :val="views" unit="" />
       <AnalysisComponent title="clicks" :val="clicks" unit="" />
@@ -9,8 +10,12 @@
       <AnalysisComponent title="CV" :val="cv" unit="" />
       <AnalysisComponent title="CPA" :val="cpa" unit="JPY" />
       <AnalysisComponent title="CVR" :val="cvr" unit="%" />
-    </div>
+      <div class="w-64 self-end lg:self-auto lg:ml-auto">
+        <CSVupload/>
+      </div>
 
+    </div>
+    
     <div class="flex flex-wrap gap-4 w-full lg:w-2/3 lg:justify-end"></div>
   </v-card>
 </template>
@@ -19,7 +24,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import AnalysisComponent from './AnalysisComponent.vue'
-
+import CSVupload from './CSVupload.vue';
 const store = useStore()
 store.dispatch('getCampaignDetail', [store.state.campaignDetail.startDate, store.state.campaignDetail.endDate])
 const totalCost = computed(() => {
