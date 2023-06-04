@@ -75,11 +75,19 @@ export default {
     state.campaignAdd.campaigns = []
   },
 
-  [types.ADD_FILTER_NAME](state, payload) {
-    state.campaignDetail.filterCampaignNames = [...state.campaignDetail.filterCampaignNames, payload]
+  [types.ADD_FILTER_CAMPAIGN_NAME](state, payload) {
+    state.campaignDetail.filterCampaignNames.add(payload)
   },
 
   [types.REMOVE_FILTER_CAMPAIGN_NAME](state, payload) {
-    state.campaignDetail.filterCampaignNames.splice(payload, 1)
+    state.campaignDetail.filterCampaignNames.delete(payload)
+  },
+
+  [types.ADD_FILTER_GROUP_NAME](state, payload) {
+    state.campaignDetail.filterGroupNames.add(payload)
+  },
+
+  [types.REMOVE_FILTER_GROUP_NAME](state, payload) {
+    state.campaignDetail.filterGroupNames.delete(payload)
   },
 }

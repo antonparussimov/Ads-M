@@ -37,7 +37,8 @@ export default {
       id: state.campaignDetail.id,
       startDate: state.campaignDetail.startDate,
       endDate: state.campaignDetail.endDate,
-      filterCampaignNames: state.campaignDetail.filterCampaignNames,
+      filterCampaignNames: Array.from(state.campaignDetail.filterCampaignNames),
+      filterGroupNames: Array.from(state.campaignDetail.filterGroupNames),
     }
 
     axios
@@ -104,13 +105,22 @@ export default {
       })
   },
 
-  [types.ADD_FILTER_NAME]({ commit, dispatch }, paylod) {
-    commit(types.ADD_FILTER_NAME, paylod)
+  [types.ADD_FILTER_CAMPAIGN_NAME]({ commit, dispatch }, paylod) {
+    commit(types.ADD_FILTER_CAMPAIGN_NAME, paylod)
     dispatch('getCampaignDetailCommon')
   },
 
   [types.REMOVE_FILTER_CAMPAIGN_NAME]({ commit, dispatch }, paylod) {
     commit(types.REMOVE_FILTER_CAMPAIGN_NAME, paylod)
+    dispatch('getCampaignDetailCommon')
+  },
+  [types.ADD_FILTER_GROUP_NAME]({ commit, dispatch }, paylod) {
+    commit(types.ADD_FILTER_GROUP_NAME, paylod)
+    dispatch('getCampaignDetailCommon')
+  },
+
+  [types.REMOVE_FILTER_GROUP_NAME]({ commit, dispatch }, paylod) {
+    commit(types.REMOVE_FILTER_GROUP_NAME, paylod)
     dispatch('getCampaignDetailCommon')
   },
 }

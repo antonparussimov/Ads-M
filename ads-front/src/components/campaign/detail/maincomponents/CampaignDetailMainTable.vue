@@ -15,6 +15,9 @@
       <template v-slot:item.date="{ item }">
         <td @click="dateClicked(item)">{{ item.selectable.date }}</td>
       </template>
+      <template v-slot:item.groupName="{ item }">
+        <td @click="groupClicked(item)">{{ item.selectable.groupName }}</td>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -54,15 +57,18 @@ const items = computed(() => {
       reach: 0,
       cpm: '¥' + ifError((item.cost / item.views) * 1000, '-', 0),
       frequency: 0,
+      tag1: item.tag1,
     }
   })
 })
 
 const campaignClicked = (item) => {
-  store.dispatch(types.ADD_FILTER_NAME, item.columns.campaignName)
+  store.dispatch(types.ADD_FILTER_CAMPAIGN_NAME, item.columns.campaignName)
+}
+const groupClicked = (item) => {
+  store.dispatch(types.ADD_FILTER_GROUP_NAME, item.columns.groupName)
 }
 const dateClicked = (item) => {
-  //store.dispatch(types.ADD_FILTER_NAME, item.columns.campaignName)
   const date = new Date(item.columns.date)
   let value1 = []
   value1[0] = format(date, 'yyyy-MM-dd')
@@ -92,5 +98,6 @@ const allHeaders = [
   { title: 'Reach', key: 'reach', align: 'end' },
   { title: 'CPM', key: 'cpm', align: 'end' },
   { title: 'Frequency', key: 'frequency', align: 'end' },
+  { title: '媒体', key: 'tag1', align: 'end' },
 ]
 </script>

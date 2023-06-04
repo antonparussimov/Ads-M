@@ -29,10 +29,12 @@ const state = {
       // 'reach',
       'cpm',
       // 'frequency',
+      'tag1',
     ],
     campaignHistory: [],
     chartData: [],
-    filterCampaignNames: [],
+    filterCampaignNames: new Set(),
+    filterGroupNames: new Set(),
   },
   campaignAdd: {
     campaigns: [],
