@@ -14,11 +14,38 @@ const store = useStore()
 const series = computed(() => {
   return [
     {
-      name: 'sdf',
+      name: 'cost',
       data: store.state.campaignDetail.chartData.map((item) => {
         return {
           x: new Date(item.date).getTime(),
           y: item.cost,
+        }
+      }),
+    },
+    {
+      name: 'views',
+      data: store.state.campaignDetail.chartData.map((item) => {
+        return {
+          x: new Date(item.date).getTime(),
+          y: item.views,
+        }
+      }),
+    },
+    {
+      name: 'clicks',
+      data: store.state.campaignDetail.chartData.map((item) => {
+        return {
+          x: new Date(item.date).getTime(),
+          y: item.clicks,
+        }
+      }),
+    },
+    {
+      name: 'cv',
+      data: store.state.campaignDetail.chartData.map((item) => {
+        return {
+          x: new Date(item.date).getTime(),
+          y: item.cv,
         }
       }),
     },
@@ -86,10 +113,10 @@ const chartOptions = computed(() => {
     fill: {
       type: 'gradient',
       gradient: {
-        shadeIntensity: 1,
+        shadeIntensity: 0.2,
         opacityFrom: 0.7,
-        opacityTo: 0.9,
-        stops: [0, 100],
+        opacityTo: 0,
+        stops: [0, 0, 100],
       },
     },
     xaxis: {

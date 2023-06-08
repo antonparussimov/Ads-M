@@ -8,45 +8,43 @@
       </div>
     </div>
 
-    <v-data-table
-      v-model:items-per-page="itemsPerPage"
-      :headers="headers"
-      :items="items"
-      class="elevation-1"
-      item-value="name"
-    >
+    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="items" class="elevation-1" item-value="name" :footer-props="{ 'items-per-page-options': [50, 100, 500, -1] }">
     </v-data-table>
   </div>
 </template>
 
 <script setup>
-import ColumnFilterModal from './ColumnFilterModal.vue';
+import ColumnFilterModal from './ColumnFilterModal.vue'
+import ifError from '../../../../utils/ifError'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { format } from 'date-fns'
 
 const store = useStore()
 
-const itemsPerPage = ref(20)
+const itemsPerPage = ref(50)
 const items = computed(() => {
   return store.state.campaignDetail.campaignHistory.map((item) => {
-    return ({
+    return {
       date: format(new Date(item.date), 'MM/dd/yyyy'),
-      cost: item.cost,
-      costPerResult: 0,
-      cpc: (item.cost / item.views).toFixed(2),
-      impressions: 0,
-      ctr: (item.clicks / item.views).toFixed(2),
-      clicks: item.clicks,
-      resultRate: 0,
-      result: 0,
-      cpa: (item.cost / item.cv).toFixed(2),
-      cvr: (item.clicks / item.cv).toFixed(2),
-      conversions: 0,
+      campaignName: item.campaignName,
+      groupName: item.groupName,
+      adName: item.adName,
+      cost: '¥' + item.cost.toLocaleString(),
+      //costPerResult: 0,
+      cpc: '¥' + ifError(item.cost / item.clicks, '-', 0),
+      impressions: item.views.toLocaleString(),
+      ctr: ifError((item.clicks / item.views) * 100, '-', 2) + '%',
+      clicks: item.clicks.toLocaleString(),
+      //resultRate: 0,
+      result: item.cv.toLocaleString(),
+      cpa: '¥' + ifError(item.cost / item.cv, '-', 0),
+      cvr: ifError((item.cv / item.clicks) * 100, '-', 2) + '%',
+      //conversions: 0,
       reach: 0,
-      costPer1000People: 0,
+      cpm: '¥' + ifError((item.cost / item.views) * 1000, '-', 0),
       frequency: 0,
-    })
+    }
   })
 })
 
@@ -55,20 +53,23 @@ const headers = computed(() => {
 })
 
 const allHeaders = [
-  { title: '時間', align: 'start', sortable: false, key: 'date', fixed: true },
-  { title: '総コスト', align: 'end', sortable: false, key: 'cost' },
-  { title: '結果の単価', align: 'end', sortable: false, key: 'costPerResult' },
-  { title: 'CPC', key: 'cpc', align: 'end' },
+  { title: '日付', align: 'start', key: 'date', fixed: true },
+  { title: 'キャンペーン名', key: 'campaignName', align: 'end' },
+  { title: 'グループ名', key: 'groupName', align: 'end' },
+  { title: '広告名', key: 'adName', align: 'end' },
+  { title: '総コスト', align: 'end', key: 'cost' },
+  //{ title: '結果の単価', align: 'end', sortable: false, key: 'costPerResult' },
   { title: 'IMP数', key: 'impressions', align: 'end' },
-  { title: 'CTR', key: 'ctr', align: 'end' },
   { title: 'Clicks', key: 'clicks', align: 'end' },
-  { title: 'Result rate', key: 'resultRate', align: 'end' },
+  { title: 'CTR', key: 'ctr', align: 'end' },
+  { title: 'CPC', key: 'cpc', align: 'end' },
+  //{ title: 'Result rate', key: 'resultRate', align: 'end' },
   { title: 'Result', key: 'result', align: 'end' },
   { title: 'CPA', key: 'cpa', align: 'end' },
   { title: 'CVR', key: 'cvr', align: 'end' },
-  { title: 'Conversions', key: 'conversions', align: 'end' },
+  //{ title: 'Conversions', key: 'conversions', align: 'end' },
   { title: 'Reach', key: 'reach', align: 'end' },
-  { title: 'Cost Per 1000 People', key: 'costPer1000People', align: 'end' },
-  { title: 'Frequency', key: 'frequency', align: 'end' }
+  { title: 'CPM', key: 'cpm', align: 'end' },
+  { title: 'Frequency', key: 'frequency', align: 'end' },
 ]
 </script>
