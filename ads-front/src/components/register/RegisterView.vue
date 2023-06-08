@@ -84,7 +84,7 @@ const loading = computed(() => {
 const form = ref(false)
 
 const Errors = computed(() => {
-  return store.getters.Errors
+  return store.getters['auth/Errors']
 })
 
 /** event listen */
@@ -95,7 +95,7 @@ function SubmitForm() {
   loading.value = true
 
   if (password.value != confirm.value) {
-    store.dispatch('setAlert', "Confirm Password and Password do not match");
+    store.dispatch('auth/setAlert', "Confirm Password and Password do not match");
   } else {
     let user = {
       name: name.value,
@@ -103,13 +103,13 @@ function SubmitForm() {
       password: password.value
     };
 
-    store.dispatch('registerUser', user);
+    store.dispatch('auth/registerUser', user);
   }
 }
 
 /** lifecycle */
 onMounted(() => {
-  store.commit('ClearAlert');
+  store.commit('auth/ClearAlert');
 })
 
 watch(loading, async (newLoading, oldLoading) => {

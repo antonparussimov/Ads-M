@@ -3,6 +3,7 @@ import * as getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
 import auth from "./modules/auth";
+import advertiserAuth from './modules/advertiserAuth';
 
 const state = {
   campaignList: [],
@@ -22,6 +23,9 @@ const state = {
     showPresetSelectable: false,
   },
   campaignGettingFlag: false,
+  allowAdvertisers: [],
+  advertiserId: null,
+  accessToken: null,
 }
 
 export default createStore({
@@ -30,7 +34,8 @@ export default createStore({
   actions,
   mutations,
   modules: {
-    auth
+    auth,
+    advertiserAuth
   },
   plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
 })

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useStore } from 'vuex'
 
 const routes = [
   {
@@ -16,6 +17,7 @@ const routes = [
     path: '/tik/perf',
     name: 'CampaignDetail',
     component: () => import('/src/components/campaign/detail/CampaignDetail.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/tik/perf/campaign/add',
@@ -32,6 +34,22 @@ const routes = [
     name: 'register', 
     component: () => import('/src/components/register/RegisterView.vue'),
   },
+  { 
+    path: '/advertiser/login', 
+    name: 'advertiser.login', 
+    component: () => import('/src/components/advertiser/login/LoginView.vue'),
+  },
+  { 
+    path: '/advertiser/register', 
+    name: 'advertiser.register', 
+    component: () => import('/src/components/advertiser/register/RegisterView.vue'),
+  },
+  {
+    path: '/advertiser/dashboard',
+    name: 'advertiser.dashboard',
+    component: () => import('/src/components/advertiser/dashboard/DashboardView.vue'),
+    meta: { requiresAdvertiserAuth: true }
+  },
 ]
 
 const router = createRouter({
@@ -39,10 +57,19 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+const store = useStore()
+
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    // await store.dispatch('loadUser')
     if (!localStorage.token) {
       next({ name: 'login' })
+    } else {
+      next()
+    }
+  } else if(to.matched.some(record => record.meta.requiresAdvertiserAuth)) {
+    if(!localStorage.advertiserToken) {
+      next({name: 'advertiser.login'})
     } else {
       next()
     }

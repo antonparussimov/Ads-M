@@ -9,6 +9,11 @@
       </template>
 
       <v-list>
+        <v-list-item>
+          <v-list-item-title>
+            <SelectAdvertiserModal />
+          </v-list-item-title>
+        </v-list-item>
         <v-list-item v-for="(item, index) in items" :key="index" @click="goToPage(index)">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
@@ -41,6 +46,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import * as types from '../../store/types'
+import SelectAdvertiserModal from './SelectAdvertiserModal.vue'
 
 const store = useStore()
 
