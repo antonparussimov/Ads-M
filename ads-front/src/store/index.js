@@ -2,7 +2,8 @@ import { createStore, createLogger } from 'vuex'
 import * as getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
-import auth from './modules/auth'
+import auth from "./modules/auth";
+import advertiserAuth from './modules/advertiserAuth';
 
 const state = {
   campaignList: [],
@@ -29,10 +30,12 @@ const state = {
       // 'reach',
       'cpm',
       // 'frequency',
+      'tag1',
     ],
     campaignHistory: [],
     chartData: [],
-    filterNames: [],
+    filterCampaignNames: new Set(),
+    filterGroupNames: new Set(),
   },
   campaignAdd: {
     campaigns: [],
@@ -41,6 +44,9 @@ const state = {
     showPresetSelectable: false,
   },
   campaignGettingFlag: false,
+  allowAdvertisers: [],
+  advertiserId: null,
+  accessToken: null,
 }
 
 export default createStore({
@@ -50,6 +56,7 @@ export default createStore({
   mutations,
   modules: {
     auth,
+    advertiserAuth
   },
   plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
 })

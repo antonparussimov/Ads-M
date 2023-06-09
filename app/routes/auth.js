@@ -8,6 +8,7 @@ const { check, validationResult } = require("express-validator");
 
 const db = require('../models');
 const User = db.user;
+const AllowAdvertiser = db.allowAdvertiser;
 const Op = db.Sequelize.Op;
 
 // @route       GET api/auth
@@ -73,5 +74,19 @@ router.post(
     }
   }
 );
+
+// @route       GET api/auth/get_allow_advertisers
+// @desc        Get logged in user
+// @access      Private
+router.get("/get_allow_advertisers", auth, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    const advertisers = await user.getAdvertisers();
+    res.json({advertisers})
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send({msg: "Server Error "});
+  }
+});
 
 module.exports = router;
