@@ -26,7 +26,7 @@ db.advertiser = require('./advertiser.model.js')(sequelize, Sequelize);
 db.allowAdvertiser = require('./allowAdvertiser.model.js')(sequelize, Sequelize);
 
 //associations
-db.advertiser.belongsToMany(db.user, { through: 'AdvertiserUser' });
-db.user.belongsToMany(db.advertiser, { through: 'AdvertiserUser' });
+db.advertiser.belongsToMany(db.user, { through: 'advertiser_user' });
+db.user.belongsToMany(db.advertiser, { through: 'advertiser_user' });
 
 module.exports = db;
