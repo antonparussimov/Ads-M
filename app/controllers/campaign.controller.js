@@ -85,7 +85,7 @@ exports.findOne = (req, res) => {
     })
 }
 
-async function getCampaignPerDay(curDate) {
+async function getCampaignPerDay(curDate, advertiserId, accessToken) {
   console.log('call getCampaignPerDay function>>', curDate)
   let stat = [
     'campaign_id',
@@ -110,7 +110,7 @@ async function getCampaignPerDay(curDate) {
     //primary_status      : 'STATUS_ALL',
     start_date: curDate,
     end_date: curDate,
-    advertiser_id: '7128276846151483393',
+    advertiser_id: advertiserId,
     fields: JSON.stringify(stat),
     group_by: JSON.stringify(['STAT_GROUP_BY_FIELD_STAT_TIME', 'STAT_GROUP_BY_FIELD_ID']),
     time_granularity: 'STAT_TIME_GRANULARITY_DAILY', //'STAT_TIME_GRANULARITY_HOURLY'
@@ -126,7 +126,7 @@ async function getCampaignPerDay(curDate) {
   await axios
     .get(url, {
       headers: {
-        'Access-Token': 'e703d9339371aeb0144d9451123a94a3482c1e18',
+        'Access-Token': accessToken,
       },
     })
     .then((res) => {
@@ -141,7 +141,7 @@ async function getCampaignPerDay(curDate) {
             console.log(888888888888888888888888888)
             console.log(item)
 
-            addCampaign(item)
+            addCampaign(item, advertiserId)
           })
         )
           .then(() => {
@@ -182,7 +182,7 @@ exports.getCampaignFromTiktok = async (req, res) => {
     let start_date = new Date(latest_date)
     start_date.setDate(start_date.getDate() + 1)
     for (let date = start_date; date <= new Date("2022-08-31"); date.setDate(date.getDate() + 1)) {
-      await getCampaignPerDay(format(date, 'yyyy-MM-dd'))
+      await getCampaignPerDay(format(date, 'yyyy-MM-dd'), req.body.advertiserId, req.body.accessToken)
     }
 
     res.send({
@@ -221,43 +221,50 @@ exports.getCampaignFromCsv = async (req, res) => {
   }
 
 
-exports.addCampaignToTiktok = (req, res) => {
+exports.addCampaignToTiktok = async (req, res) => {
   const campaigns = req.body.campaigns
-  console.log(campaigns[0])
-  if (campaigns[0] != undefined) {
-    campaigns.map((item) => {
-      axios
-        .post(
-          'https://ads.tiktok.com/open_api/v1.2/campaign/create/',
-          {
-            advertiser_id: '7128276846151483393',
-            budget_mode: item.cell7,
-            budget: item.cell8,
-            objective_type: item.cell10,
-            campaign_name: item.cell5,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Token': this.ACCESS_TOKEN,
+
+  try {
+    if (campaigns[0] != undefined) {
+      await campaigns.map(async (item) => {
+        await axios
+          .post(
+            'https://ads.tiktok.com/open_api/v1.2/campaign/create/',
+            {
+              advertiser_id: '7128276846151483393',
+              budget_mode: item.cell7,
+              budget: item.cell8,
+              objective_type: item.cell10,
+              campaign_name: item.cell5,
             },
-          }
-        )
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Token': this.ACCESS_TOKEN,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res.data)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+    }
+
+    res.send({
+      message: 'success',
+    })
+  } catch (error) {
+    res.status(404).json({
+      message: 'Adding Tiktok error'
     })
   }
 
-  res.send({
-    message: 'success',
-  })
 }
 
-const addCampaign = (data) => {
+const addCampaign = (data, advertiserId) => {
   const campaign = {
     campaignId: data.campaign_id,
     campaignName: data.campaign_name,
@@ -273,6 +280,7 @@ const addCampaign = (data) => {
     cost: data.stat_cost,
     views: data.show_cnt,
     likes: data.ad_like,
+    advertiserId: advertiserId
   }
 
   Campaign.create(campaign)

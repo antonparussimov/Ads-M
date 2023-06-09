@@ -68,11 +68,15 @@ export default {
       })
   },
 
-  [types.GET_CAPAIGN_FROM_TIKTOK]({ commit, dispatch }) {
+  [types.GET_CAPAIGN_FROM_TIKTOK]({ state, commit, dispatch }) {
     commit(types.GET_CAPAIGN_FROM_TIKTOK)
-    // context.state.campaignGettingFlag = true
+    
+    const payload = {
+      advertiserId : state.advertiserId,
+      accessToken: state.accessToken,
+    }
     axios
-      .get(`${proxy}/campaigns/get_campaign_from_tiktok`)
+      .get(`${proxy}/campaigns/get_campaign_from_tiktok`, payload)
       .then((res) => {
         commit(types.GETED_CAPAIGN_FROM_TIKTOK)
         dispatch('getCampaigns')
@@ -101,7 +105,7 @@ export default {
   },
   [types.ADD_CAMPAIGN_TO_TIKTOK] ({state, commit}) {
     axios.post(`${proxy}/campaigns/add_campaign_to_tiktok`, {
-      campaigns: state.campaignAdd.campaigns
+      campaigns: state.campaignAdd.campaigns,
     })
       .then(res => {
         commit(types.ADD_CAMPAIGN_TO_TIKTOK)
