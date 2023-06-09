@@ -26,6 +26,7 @@
           <v-checkbox v-model="selectedColumns" density="compact" label="Reach" value="reach"></v-checkbox>
           <v-checkbox v-model="selectedColumns" density="compact" label="CPM" value="cpm"></v-checkbox>
           <v-checkbox v-model="selectedColumns" density="compact" label="Frequency" value="frequency"></v-checkbox>
+          <v-checkbox v-model="selectedColumns" density="compact" label="tag1" value="tag1"></v-checkbox>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>

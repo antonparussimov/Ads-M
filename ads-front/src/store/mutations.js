@@ -75,12 +75,20 @@ export default {
     state.campaignAdd.campaigns = []
   },
 
-  [types.ADD_FILTER_NAME](state, payload) {
-    state.campaignDetail.filterNames = [...state.campaignDetail.filterNames, payload]
+  [types.ADD_FILTER_CAMPAIGN_NAME](state, payload) {
+    state.campaignDetail.filterCampaignNames.add(payload)
   },
 
-  [types.REMOVE_FILTER_NAME](state, payload) {
-    state.campaignDetail.filterNames.splice(payload, 1)
+  [types.REMOVE_FILTER_CAMPAIGN_NAME](state, payload) {
+    state.campaignDetail.filterCampaignNames.delete(payload)
+  },
+
+  [types.ADD_FILTER_GROUP_NAME](state, payload) {
+    state.campaignDetail.filterGroupNames.add(payload)
+  },
+
+  [types.REMOVE_FILTER_GROUP_NAME](state, payload) {
+    state.campaignDetail.filterGroupNames.delete(payload)
   },
 
   getAllowAdvertisers (state, payload) {
