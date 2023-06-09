@@ -68,7 +68,6 @@ const actions = {
   },
 
   async loadUser({ commit }) {
-    const router = useRouter()
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
@@ -110,6 +109,7 @@ const mutations = {
     state.error = error;
     state.Auth = false;
     state.user = {};
+    state.token = null
     setTimeout(
       function() {
         state.error = null;
@@ -127,6 +127,7 @@ const mutations = {
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,

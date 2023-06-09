@@ -1,5 +1,7 @@
 import axios from 'axios'
 import * as types from './types'
+import { useRouter } from 'vue-router'
+import setAuthToken from "../utils/setAuthToken";
 
 const proxy = types.PROXY_URL
 
@@ -123,4 +125,23 @@ export default {
     commit(types.REMOVE_FILTER_GROUP_NAME, paylod)
     dispatch('getCampaignDetailCommon')
   },
+
+  getAllowAdvertisers ({commit}) {
+    if(localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
+    axios
+      .get(`${proxy}/auth/get_allow_advertisers`)
+      .then(res => {
+        commit('getAllowAdvertisers', res.data.advertisers)
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) {
+          commit('removeToken')
+        } else {
+          console.log(error)
+        }
+      })
+  }
 }
+

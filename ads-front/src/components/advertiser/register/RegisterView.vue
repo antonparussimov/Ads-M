@@ -12,6 +12,15 @@
         @submit.prevent="SubmitForm"
       >
         <v-text-field
+          v-model="name"
+          :readonly="loading"
+          class="mb-2"
+          clearable
+          color="primary"
+          label="Name"
+        ></v-text-field>
+
+        <v-text-field
           v-model="email"
           :readonly="loading"
           class="mb-2"
@@ -28,6 +37,15 @@
           type="password"
         ></v-text-field>
 
+        <v-text-field
+          v-model="confirm"
+          :readonly="loading"
+          clearable
+          label="Confirm"
+          placeholder="Confirm Password"
+          type="password"
+        ></v-text-field>
+
         <br>
 
         <v-btn
@@ -39,7 +57,7 @@
           type="submit"
           variant="elevated"
         >
-          Sign In
+          Complete Registration
         </v-btn>
       </v-form>
     </v-card>
@@ -56,16 +74,17 @@ const router = useRouter()
 
 const store = useStore();
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
+const confirm = ref('')
+const loading = computed(() => {
+  return store.state.advertiserAuth.loading
+})
 const form = ref(false)
 
 const Errors = computed(() => {
-  return store.getters['auth/Errors']
-})
-
-const loading = computed(() => {
-  return store.state.auth.loading
+  return store.getters['advertiserAuth/Errors']
 })
 
 /** event listen */
@@ -75,21 +94,27 @@ function SubmitForm() {
 
   loading.value = true
 
-  let user = {
-    email: email.value,
-    password: password.value
-  };
-  store.dispatch('auth/LoginUser', user);
+  if (password.value != confirm.value) {
+    store.dispatch('advertiserAuth/setAlert', "Confirm Password and Password do not match");
+  } else {
+    let advertiser = {
+      name: name.value,
+      email: email.value,
+      password: password.value
+    };
+
+    store.dispatch('advertiserAuth/registerAdvertiser', advertiser);
+  }
 }
 
 /** lifecycle */
 onMounted(() => {
-  store.commit('auth/ClearAlert');
+  store.commit('advertiserAuth/ClearAlert');
 })
 
 watch(loading, async (newLoading, oldLoading) => {
   if(newLoading == false && oldLoading == true) {
-    if(localStorage.token) {
+    if(localStorage.advertiserToken) {
       router.push('/')
     }
   }

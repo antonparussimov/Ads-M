@@ -90,4 +90,20 @@ export default {
   [types.REMOVE_FILTER_GROUP_NAME](state, payload) {
     state.campaignDetail.filterGroupNames.delete(payload)
   },
+
+  getAllowAdvertisers (state, payload) {
+    state.allowAdvertisers = payload
+  },
+
+  removeToken(state) {
+    localStorage.removeItem('token')
+    state.auth.Auth = false
+    state.auth.user = {}
+    state.auth.token = null
+  },
+
+  setAdvertiser(state, payload) {
+    state.advertiserId = payload.advertiserId
+    state.accessToken = payload.accessToken
+  }
 }

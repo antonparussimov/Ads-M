@@ -61,11 +61,11 @@ const password = ref('')
 const form = ref(false)
 
 const Errors = computed(() => {
-  return store.getters['auth/Errors']
+  return store.getters['advertiserAuth/AdvertiserErrors']
 })
 
 const loading = computed(() => {
-  return store.state.auth.loading
+  return store.state.advertiserAuth.loading
 })
 
 /** event listen */
@@ -75,22 +75,22 @@ function SubmitForm() {
 
   loading.value = true
 
-  let user = {
+  let advertiser = {
     email: email.value,
     password: password.value
   };
-  store.dispatch('auth/LoginUser', user);
+  store.dispatch('advertiserAuth/LoginAdvertiser', advertiser);
 }
 
 /** lifecycle */
 onMounted(() => {
-  store.commit('auth/ClearAlert');
+  store.commit('advertiserAuth/ClearAlert');
 })
 
 watch(loading, async (newLoading, oldLoading) => {
   if(newLoading == false && oldLoading == true) {
-    if(localStorage.token) {
-      router.push('/')
+    if(localStorage.advertiserToken) {
+      router.push('/advertiser/dashboard')
     }
   }
 })

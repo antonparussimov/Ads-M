@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
-db.sequelize.sync() //{ force: true }  >>>> drop the table if it already exists
+db.sequelize.sync({alter: true}) //{ force: true }  >>>> drop the table if it already exists
   .then(() => {
     console.log("Synced db.");
     // seeder
@@ -36,6 +36,8 @@ require("./app/routes/campaign.routes")(app);
 require("./app/routes/campaignPresets.routes")(app);
 app.use("/api/user", require('./app/routes/users'));
 app.use("/api/auth", require('./app/routes/auth'));
+app.use("/api/advertiser/advertiser", require("./app/routes/advertiser/advertiser"));
+app.use("/api/advertiser/auth", require("./app/routes/advertiser/auth"));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
