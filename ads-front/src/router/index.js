@@ -2,17 +2,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useStore } from 'vuex'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Dashboard',
-    component: () => import('/src/components/dashboard/Dashboard.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/tik/perf/campaign',
-    name: 'Campaign',
-    component: () => import('/src/components/campaign/Campaign.vue'),
-  },
+  // {
+  //   path: '/',
+  //   name: 'Dashboard',
+  //   component: () => import('/src/components/dashboard/Dashboard.vue'),
+  //   meta: { requiresAuth: true }
+  // },
+  // {
+  //   path: '/tik/perf/campaign',
+  //   name: 'Campaign',
+  //   component: () => import('/src/components/campaign/Campaign.vue'),
+  // },
   {
     path: '/tik/perf',
     name: 'CampaignDetail',
@@ -50,6 +50,11 @@ const routes = [
     component: () => import('/src/components/advertiser/dashboard/DashboardView.vue'),
     meta: { requiresAdvertiserAuth: true }
   },
+  { 
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: () => import('/src/components/not_found/NotFoundView.vue'),
+  }
 ]
 
 const router = createRouter({

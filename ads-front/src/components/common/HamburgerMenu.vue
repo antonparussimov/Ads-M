@@ -14,7 +14,7 @@
             <SelectAdvertiserModal />
           </v-list-item-title>
         </v-list-item>
-        <v-list-item v-for="(item, index) in items" :key="index" @click="goToPage(index)">
+        <v-list-item v-for="(item, index) in items" :key="index" @click="goToPage(item.name)">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -57,11 +57,10 @@ const dialog = computed(() => {
 })
 
 const items = ref([
-  { title: 'Dashboard' }, 
-  { title: 'Campaigns' }, 
-  { title: 'Add Campaign' }, 
-  { title: 'データを更新する' },
-  { title: 'logout' }, 
+  { title: 'Campaigns', name: 'campaigns' }, 
+  { title: 'Add Campaign', name: 'add_campaign' }, 
+  { title: 'データを更新する', name: 'get_campagin_from_tiktok' },
+  { title: 'logout', name: 'logout' }, 
 ])
 
 function toggleMenu() {
@@ -69,16 +68,14 @@ function toggleMenu() {
 }
 
 const router = useRouter()
-function goToPage(index) {
-  if (index == 0) {
-    router.push('/')
-  } else if(index == 1) {
+function goToPage(name) {
+  if(name == 'campaigns') {
     router.push('/tik/perf')
-  } else if(index == 2) {
+  } else if(name == 'add_campaign') {
     router.push('/tik/perf/campaign/add')
-  } else if(index == 3) {
+  } else if(name == 'get_campagin_from_tiktok') {
     store.dispatch(types.GET_CAPAIGN_FROM_TIKTOK)
-  } else if(index == 4) {
+  } else if(name == 'logout') {
     store.commit('Logout')
     router.push('/login')
   }
