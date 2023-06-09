@@ -10,13 +10,13 @@
 
     <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="items" class="elevation-1" item-value="name">
       <template v-slot:item.campaignName="{ item }">
-        <td @click="campaignClicked(item)">{{ item.selectable.campaignName }}</td>
+        <td @click="campaignClicked(item)">{{ item.campaignName }}</td>
       </template>
       <template v-slot:item.date="{ item }">
-        <td @click="dateClicked(item)">{{ item.selectable.date }}</td>
+        <td @click="dateClicked(item)">{{ item.date }}</td>
       </template>
       <template v-slot:item.groupName="{ item }">
-        <td @click="groupClicked(item)">{{ item.selectable.groupName }}</td>
+        <td @click="groupClicked(item)">{{ item.groupName }}</td>
       </template>
     </v-data-table>
   </div>

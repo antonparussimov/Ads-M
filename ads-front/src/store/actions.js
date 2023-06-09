@@ -27,7 +27,7 @@ export default {
 
   getCampaignDetailCommon({ state, commit }) {
     const payload = {
-      id: state.campaignDetail.id,
+      advertiserId: state.advertiserId,
       startDate: state.campaignDetail.startDate,
       endDate: state.campaignDetail.endDate,
       filterCampaignNames: Array.from(state.campaignDetail.filterCampaignNames),

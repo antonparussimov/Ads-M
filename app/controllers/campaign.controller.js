@@ -24,8 +24,7 @@ exports.findAll = (req, res) => {
 
 // Find a campaign data with id
 exports.findOne = (req, res) => {
-  console.log(req.body)
-  const id = req.body.id
+  const advertiserId = req.body.advertiserId
   const startDate = new Date(req.body.startDate)
   const endDate = new Date(req.body.endDate)
   endDate.setDate(endDate.getDate() + 1)
@@ -33,7 +32,7 @@ exports.findOne = (req, res) => {
   let filterGroupNames = req.body.filterGroupNames
   const result = {}
   let where = {
-    // adId: id,
+    adId: advertiserId,
     date: {
       [Op.lt]: endDate,
       [Op.gte]: startDate,
@@ -50,7 +49,7 @@ exports.findOne = (req, res) => {
       [Op.in]: filterGroupNames,
     }
   }
-  console.log(where)
+
   Campaign.findAll({
     where: where,
   })
