@@ -57,6 +57,9 @@ module.exports = (sequelize, Sequelize) => {
     tag3: {
       type: Sequelize.STRING,
     },
+    advertiserId: {
+      type: Sequelize.BIGINT,
+    }
   });
 
   return Campaign;

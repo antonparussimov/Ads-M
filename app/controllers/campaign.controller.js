@@ -32,7 +32,7 @@ exports.findOne = (req, res) => {
   let filterGroupNames = req.body.filterGroupNames
   const result = {}
   let where = {
-    adId: advertiserId,
+    advertiserId: advertiserId,
     date: {
       [Op.lt]: endDate,
       [Op.gte]: startDate,
@@ -205,7 +205,7 @@ exports.getCampaignFromCsv = async (req, res) => {
     for ( let prop of req.body.data){ 
       console.log(12345678987654323456789)
       console.log(prop) 
-          await uploadCampaign(prop)
+      await uploadCampaign(prop)
     }
       
 //      await uploadCampaign(prop)}
