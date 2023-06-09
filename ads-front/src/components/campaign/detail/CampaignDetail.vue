@@ -12,4 +12,5 @@ import HamburgerMenu from '../../common/HamburgerMenu.vue'
 import CampaignDetailTab from './CampaignDetailTab.vue';
 import CampaignAnalysis from './CampaignAnalysis.vue';
 import CampaignMainTab from './CampaignMainTab.vue';
+
 </script>

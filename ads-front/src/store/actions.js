@@ -3,20 +3,11 @@ import * as types from './types'
 import { useRouter } from 'vue-router'
 import setAuthToken from "../utils/setAuthToken";
 
+
+
 const proxy = types.PROXY_URL
 
 export default {
-  getCampaigns({ commit }) {
-    axios
-      .post(`${proxy}/campaigns`)
-      .then((res) => {
-        commit('getCampaigns', res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  },
-
   getCampaigns({ commit }) {
     axios
       .post(`${proxy}/campaigns`)
@@ -93,13 +84,26 @@ export default {
         console.log(err)
       })
   },
+// upload csv
+  [types.GET_CAMPAIGN_FROM_CSV] ({commit, dispatch},payload) {
+    commit(types.GET_CAMPAIGN_FROM_CSV)
 
-  [types.ADD_CAMPAIGN_TO_TIKTOK]({ state, commit }) {
     axios
-      .post(`${proxy}/campaigns/add_campaign_to_tiktok`, {
-        campaigns: state.campaignAdd.campaigns,
+      .post(`${proxy}/campaigns/get_campaign_from_csv`, {data:payload})
+      .then(res => {
+        commit(types.GETED_CAMPAIGN_FROM_CSV)
+        //        dispatch('getCampaigns')
       })
-      .then((res) => {
+            .catch(err => {
+        commit(types.GETED_CAMPAIGN_FROM_CSV)
+        console.log(err)
+      })
+  },
+  [types.ADD_CAMPAIGN_TO_TIKTOK] ({state, commit}) {
+    axios.post(`${proxy}/campaigns/add_campaign_to_tiktok`, {
+      campaigns: state.campaignAdd.campaigns
+    })
+      .then(res => {
         commit(types.ADD_CAMPAIGN_TO_TIKTOK)
       })
       .catch((err) => {

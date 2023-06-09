@@ -56,6 +56,7 @@ exports.findOne = (req, res) => {
   })
     .then((data) => {
       result.campaignHistory = data
+    
       Campaign.findAll({
         attributes: [
           'date',
@@ -132,9 +133,15 @@ async function getCampaignPerDay(curDate) {
     .then((res) => {
       let addedCount = 0
       if (res.data.data.list[0] != undefined) {
-        // console.log(res.data.data.list);
+        console.log(777777777777777777777777777777777777777)
+        console.log(res.data.data.list);
+        console.log(777777777777777777777777777777777777777)
+
         Promise.all(
           res.data.data.list.map((item) => {
+            console.log(888888888888888888888888888)
+            console.log(item)
+
             addCampaign(item)
           })
         )
@@ -175,7 +182,7 @@ exports.getCampaignFromTiktok = async (req, res) => {
     yesterday.setDate(now.getDate() - 1)
     let start_date = new Date(latest_date)
     start_date.setDate(start_date.getDate() + 1)
-    for (let date = start_date; date <= yesterday; date.setDate(date.getDate() + 1)) {
+    for (let date = start_date; date <= new Date("2022-08-31"); date.setDate(date.getDate() + 1)) {
       await getCampaignPerDay(format(date, 'yyyy-MM-dd'))
     }
 
@@ -188,6 +195,32 @@ exports.getCampaignFromTiktok = async (req, res) => {
     })
   }
 }
+
+//upload csv
+exports.getCampaignFromCsv = async (req, res) => {
+  try {
+    console.log(11111111111111111111111111)
+    console.log(req.body)
+    console.log(11111111111111111111111111)
+    
+    for ( let prop of req.body.data){ 
+      console.log(12345678987654323456789)
+      console.log(prop) 
+          await uploadCampaign(prop)
+    }
+      
+//      await uploadCampaign(prop)}
+
+    res.send({
+      message: 'uploaded',
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: err.message,
+    })
+  }
+  }
+
 
 exports.addCampaignToTiktok = (req, res) => {
   const campaigns = req.body.campaigns
@@ -243,6 +276,55 @@ const addCampaign = (data) => {
     likes: data.ad_like,
   }
 
+  Campaign.create(campaign)
+    .then((data) => {
+      return data
+    })
+    .catch((err) => {
+      return err
+    })
+}
+
+const uploadCampaign = (data) => {
+  console.log(3333333333333333333);
+  let tmpdate = new Date(data['date'].substr(0,4)+"-"+data['date'].substr(5,2)+"-"+data['date'].substr(8,2))
+  data.date = tmpdate;
+  
+  console.log(data)
+console.log(data['ad_like\r'])
+//console.log(data['ad_like\r'].substr(0,data['ad_loke\r'].length-2))
+console.log(data['ad_like\r'].length)
+const adlikelen = data['ad_like\r'].length-1
+  const adlike00 = data['ad_like\r'].substr(0,adlikelen);
+  data.ad_like = parseInt(adlike00);
+  data.campaign_id = BigInt(parseFloat(data.campaign_id));
+  data.ad_id = BigInt(parseFloat(data.ad_id));
+  data.adgroup_id = BigInt(parseFloat(data.adgroup_id));
+  data.click_cnt = parseInt(data.click_cnt);
+  data.play_duration_2s = parseInt(data.play_duration_2s);
+  data.play_over = parseInt(data.play_over);
+  data.convert_cnt = parseInt(data.convert_cnt);
+  data.stat_cost = parseFloat(data.stat_cost);
+  data.show_cnt = parseInt(data.show_cnt);
+  data.ad_like = parseInt(data.ad_like);
+ console.log(data)
+  const campaign = {
+    campaignId: data.campaign_id,
+    campaignName: data.campaign_name,
+    adId: data.ad_id,
+    groupName: data.adgroup_name,
+    campaignGroupId: data.adgroup_id,
+    adName: data.ad_name,
+    clicks: data.click_cnt,
+    viewsSec: data.play_duration_2s,
+    viewsFull: data.play_over,
+    date: data.date,
+    cv:data.convert_cnt,
+    cost: data.stat_cost,
+    views: data.show_cnt,
+    likes: data.ad_like,
+  }
+  console.log(campaign)
   Campaign.create(campaign)
     .then((data) => {
       return data

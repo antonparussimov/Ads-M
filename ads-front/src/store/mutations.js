@@ -71,6 +71,15 @@ export default {
     state.campaignGettingFlag = false
   },
 
+  [types.GET_CAMPAIGN_FROM_CSV](state) {
+    state.campaignGettingFlag = true
+  },
+
+  [types.GETED_CAMPAIGN_FROM_CSV](state) {
+    state.campaignGettingFlag = false
+  },
+
+
   [types.ADD_CAMPAIGN_TO_TIKTOK](state) {
     state.campaignAdd.campaigns = []
   },

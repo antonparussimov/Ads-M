@@ -10,6 +10,7 @@ module.exports = app => {
   router.post('/detail', campaigns.findOne)
 
   router.get('/get_campaign_from_tiktok', campaigns.getCampaignFromTiktok)
+  router.post('/get_campaign_from_csv', campaigns.getCampaignFromCsv)
   
   router.post('/add_campaign_to_tiktok', campaigns.addCampaignToTiktok)
 
