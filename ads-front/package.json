@@ -16,6 +16,7 @@
     "chart.js": "^4.2.1",
     "date-fns": "^2.30.0",
     "flowbite": "^1.6.5",
+    "openai": "^3.2.1",
     "primevue": "^3.27.0",
     "tw-elements": "^1.0.0-beta2",
     "vue": "^3.2.47",
@@ -26,6 +27,7 @@
     "vue-time-date-range-picker-vue3": "^1.4.17",
     "vue3-apexcharts": "^1.4.1",
     "vue3-date-time-picker": "^2.8.3",
+    "vue3-spinner": "^0.0.17",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
@@ -39,5 +41,3 @@
     "vuetify": "^3.1.16"
   }
 }
-
-

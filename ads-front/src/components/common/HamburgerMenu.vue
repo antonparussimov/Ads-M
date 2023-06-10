@@ -60,6 +60,7 @@ const items = ref([
   { title: 'Campaigns', name: 'campaigns' }, 
   { title: 'Add Campaign', name: 'add_campaign' }, 
   { title: 'データを更新する', name: 'get_campagin_from_tiktok' },
+  {title: '広告の台本を作る',name: 'chatgpt'},
   { title: 'logout', name: 'logout' }, 
 ])
 
@@ -78,6 +79,8 @@ function goToPage(name) {
   } else if(name == 'logout') {
     store.commit('Logout')
     router.push('/login')
+  }else if(name == 'chatgpt'){
+    router.push('/gpt')
   }
 }
 </script>

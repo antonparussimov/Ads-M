@@ -5,6 +5,16 @@ import mutations from './mutations'
 import auth from "./modules/auth";
 import advertiserAuth from './modules/advertiserAuth';
 
+
+const savedLists = localStorage.getItem('gpttextlists')
+const tmpLists = localStorage.getItem('usertextlists')
+const FiniLists = localStorage.getItem('finitextlists')
+const NowText = localStorage.getItem("nowtextstrings")
+const ShowLoading = localStorage.getItem("showloading")
+const ShowLoading2 = localStorage.getItem("showloading2")
+const ShowLoading3 = localStorage.getItem("showloading3")
+
+
 const state = {
   campaignList: [],
   campaignDetail: {
@@ -47,6 +57,15 @@ const state = {
   allowAdvertisers: [],
   advertiserId: null,
   accessToken: null,
+    //modify
+    lists:[],
+    tmp:[],
+    finished:[],
+  //      nowtext:"",
+     showloading: false,
+     showloading2: false,
+     showloading3: false,
+  nowtext: NowText ? JSON.parse(NowText) : "",
 }
 
 export default createStore({
