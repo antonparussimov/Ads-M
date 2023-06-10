@@ -180,6 +180,8 @@ const mutations = {
   setAllowUsers: (state, allowUsers) => {
     if(allowUsers.length) {
       state.allowUsers = allowUsers.map(user => parseInt(user.id))
+    } else {
+      state.allowUsers = []
     }
   },
 };
