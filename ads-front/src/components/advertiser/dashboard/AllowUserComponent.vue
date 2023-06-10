@@ -3,7 +3,7 @@
       <v-list-subheader>Allow Users</v-list-subheader>
 
       <v-list-item v-for="user in users" :key="user.id" :value="user.id">
-        <template v-slot:prepend="{ isActive }">
+        <template v-slot:prepend>
           <v-list-item-action start>
             <v-checkbox-btn v-model="selected" :value="user.id"></v-checkbox-btn>
           </v-list-item-action>

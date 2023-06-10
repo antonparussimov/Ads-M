@@ -131,8 +131,7 @@ router.get("/get_allow_users", auth, async(req, res) => {
 router.post("/set_allow_users", auth, async(req, res) => {
   try {
     const advertiser = await Advertiser.findByPk(req.advertiser.id);
-    await advertiser.removeUsers()
-    
+    await advertiser.setUsers([])
     const { allowUsers } = req.body
     for(let i = 0 ; i < allowUsers.length ; i ++) {
       const user = await User.findByPk(allowUsers[i])
