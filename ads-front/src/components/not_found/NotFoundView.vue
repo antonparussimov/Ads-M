@@ -30,7 +30,7 @@ setTimeout(
   function() {
    router.push({name: 'CampaignDetail'})
   },
-  5000
+  3000
 );
 </script>
 

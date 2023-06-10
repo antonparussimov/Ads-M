@@ -1,6 +1,9 @@
 <template>
   <v-sheet class="bg-gradient h-screen pa-12 flex justify-center items-center" rounded>
     <v-card class="mx-auto px-6 py-8" width="344">
+      <template v-slot:title>
+        Advertiser Login
+      </template>
       <v-alert
         v-if="Errors"
         type="error"
@@ -41,6 +44,13 @@
         >
           Sign In
         </v-btn>
+
+        <br>
+
+        <div class="flex justify-between">
+          <router-link :to="{name: 'advertiser.register'}" tag="button">Sign Up</router-link>
+          <router-link :to="{name: 'login'}" tag="button">Go to User</router-link>
+        </div>
       </v-form>
     </v-card>
   </v-sheet>

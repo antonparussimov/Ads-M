@@ -23,6 +23,7 @@ const routes = [
     path: '/tik/perf/campaign/add',
     name: 'CampaignAdd',
     component: () => import('/src/components/campaign_add/CampaignAddView.vue'),
+    meta: { requiresAuth: true }
   },
   { 
     path: '/login', 

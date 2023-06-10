@@ -1,6 +1,9 @@
 <template>
   <v-sheet class="bg-gradient h-screen pa-12 flex justify-center items-center" rounded>
     <v-card class="mx-auto px-6 py-8" width="344">
+      <template v-slot:title>
+        User Sing Up
+      </template>
       <v-alert
         v-if="Errors"
         type="error"
@@ -59,6 +62,12 @@
         >
           Complete Registration
         </v-btn>
+
+        <br>
+        
+        <div class="flex justify-center">
+          <router-link :to="{name: 'login'}" tag="button">Login</router-link>
+        </div>
       </v-form>
     </v-card>
   </v-sheet>
