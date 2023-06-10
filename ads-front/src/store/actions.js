@@ -150,6 +150,39 @@ export default {
           console.log(error)
         }
       })
-  }
+  },
+   //modify
+   addlist(context, payload){
+    context.commit("addlist", payload);
+  },
+  
+  addlistrewrite(context, payload){
+    context.commit("addlistrewrite", payload);
+  },
+  addtmp(context, payload){
+    context.commit("addtmp", payload);
+  },
+  cleartmp(context){
+    context.commit("cleartmp")
+  },
+  addfinishedlist(context, payload){
+    context.commit("addfinishedlist", payload);
+  },
+  changefinishedlist(context, payload){
+    context.commit("changefinishedlist", payload);
+  },
+  addgpttexttofinishedtext(context, payload){
+    context.commit("addgpttexttofinishedtext", payload)
+  },
+  removelist(context, payload){
+    context.commit("removelist", payload);
+  },
+  removefinishedlist(context, payload){
+    context.commit("removefinishedlist", payload);
+  },
+  changenowtext(context, payload){
+    context.commit("changenowtext", payload);
+  },
+  
 }
 

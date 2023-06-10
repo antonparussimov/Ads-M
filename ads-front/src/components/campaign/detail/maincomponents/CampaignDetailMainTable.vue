@@ -7,17 +7,20 @@
         <ColumnFilterModal />
       </div>
     </div>
-
-    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="items" class="elevation-1" item-value="name">
+    <!-- 詳細分析以下のテーブル -->
+    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="items" class="elevation-1"
+      item-value="name">
+      <!-- sorting table -->
       <template v-slot:item.campaignName="{ item }">
-        <td @click="campaignClicked(item)">{{ item.campaignName }}</td>
+        <td @click="campaignClicked(item)">{{ item.selectable.campaignName }}</td>
       </template>
       <template v-slot:item.date="{ item }">
-        <td @click="dateClicked(item)">{{ item.date }}</td>
+        <td @click="dateClicked(item)">{{ item.selectable.date }}</td>
       </template>
       <template v-slot:item.groupName="{ item }">
-        <td @click="groupClicked(item)">{{ item.groupName }}</td>
+        <td @click="groupClicked(item)">{{ item.selectable.groupName }}</td>
       </template>
+
     </v-data-table>
   </div>
 </template>
@@ -34,33 +37,123 @@ import { format } from 'date-fns'
 const store = useStore()
 
 const itemsPerPage = ref(50)
+
 const items = computed(() => {
-  return store.state.campaignDetail.campaignHistory.map((item) => {
-    const date = new Date(item.date)
-    const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
-    return {
+  let selectedcolumns = store.state.campaignDetail.selectedColumns;
+let selectedkeys = [];
+let count = 0;
+for (let i of Object.keys(selectedcolumns)) {
+  if (selectedcolumns[i] === 'campaignName') {
+    selectedkeys.push('campaignName');
+    count += 1;
+  } else if (selectedcolumns[i] === 'groupName') {
+    selectedkeys.push('groupName');
+    count += 1;
+  } else if (selectedcolumns[i] === 'adName') {
+    selectedkeys.push('adName');
+    count += 1;
+  }
+}
+console.log(selectedkeys)
+  if (count == 3) {
+    return store.state.campaignDetail.campaignHistory.map((item) => {
+      const date = new Date(item.date)
+      const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+
+      return {
+        date: format(new Date(utcDate), 'yyyy/MM/dd'),
+        campaignName: item.campaignName,
+        groupName: item.groupName,
+        adName: item.adName,
+        cost: '¥' + item.cost.toLocaleString(),
+        //costPerResult: 0,
+        cpc: '¥' + ifError(item.cost / item.clicks, '-', 0),
+        impressions: item.views.toLocaleString(),
+        ctr: ifError((item.clicks / item.views) * 100, '-', 2) + '%',
+        clicks: item.clicks.toLocaleString(),
+        //resultRate: 0,
+        result: item.cv.toLocaleString(),
+        cpa: '¥' + ifError(item.cost / item.cv, '-', 0),
+        cvr: ifError((item.cv / item.clicks) * 100, '-', 2) + '%',
+        //conversions: 0,
+        reach: 0,
+        cpm: '¥' + ifError((item.cost / item.views) * 1000, '-', 0),
+        frequency: 0,
+        tag1: item.tag1,
+      }
+    }
+    )
+  }
+  let historykey = new Set();
+let NewHistory = {};
+for (let item of store.state.campaignDetail.campaignHistory) {
+  const date = new Date(item.date);
+  const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  let key = format(new Date(utcDate), 'yyyy/MM/dd');
+  for (let j of selectedkeys) {
+    key += String(item[j]);
+  }
+
+  if (historykey.has(key)) {
+    NewHistory[key].cost += item.cost;
+    NewHistory[key].clicks += item.clicks;
+    NewHistory[key].views += item.views;
+    NewHistory[key].cv += item.cv;
+    NewHistory[key].reach += 0;
+    NewHistory[key].frequency += 0;
+    NewHistory[key].tag1 = item.tag1;
+  } else {
+    NewHistory[key] = {
       date: format(new Date(utcDate), 'yyyy/MM/dd'),
-      campaignName: item.campaignName,
-      groupName: item.groupName,
-      adName: item.adName,
-      cost: '¥' + item.cost.toLocaleString(),
-      //costPerResult: 0,
-      cpc: '¥' + ifError(item.cost / item.clicks, '-', 0),
-      impressions: item.views.toLocaleString(),
-      ctr: ifError((item.clicks / item.views) * 100, '-', 2) + '%',
-      clicks: item.clicks.toLocaleString(),
-      //resultRate: 0,
-      result: item.cv.toLocaleString(),
-      cpa: '¥' + ifError(item.cost / item.cv, '-', 0),
-      cvr: ifError((item.cv / item.clicks) * 100, '-', 2) + '%',
-      //conversions: 0,
+      cost: item.cost,
+      clicks: item.clicks,
+      views: item.views,
+      cv: item.cv,
       reach: 0,
-      cpm: '¥' + ifError((item.cost / item.views) * 1000, '-', 0),
       frequency: 0,
       tag1: item.tag1,
-    }
-  })
+      campaignName:"",
+      groupName:"",
+      adName:"",
+    };
+    for (let j of selectedkeys) {
+    NewHistory[key][j] = item[j]
+  };
+  historykey.add(key)
+  }
+}
+
+  
+  console.log(NewHistory)
+
+  let ShowHistory = [];
+for (let i of Object.keys(NewHistory)) {
+  let item = NewHistory[i];
+  item = {
+        date: item.date,
+        campaignName: item.campaignName,
+        groupName: item.groupName,
+        adName: item.adName,
+        cost: '¥' + item.cost.toLocaleString(),
+        cpc: '¥' + ifError(item.cost / item.clicks, '-', 0),
+        impressions: item.views.toLocaleString(),
+        ctr: ifError((item.clicks / item.views) * 100, '-', 2) + '%',
+        clicks: item.clicks.toLocaleString(),
+        result: item.cv.toLocaleString(),
+        cpa: '¥' + ifError(item.cost / item.cv, '-', 0),
+        cvr: ifError((item.cv / item.clicks) * 100, '-', 2) + '%',
+        reach: 0,
+        cpm: '¥' + ifError((item.cost / item.views) * 1000, '-', 0),
+        frequency: 0,
+        tag1: item.tag1,
+}
+ShowHistory.push(item)
+}
+  console.log(ShowHistory)
+  //dateClicked(ShowHistory)
+    return ShowHistory
 })
+
 
 const campaignClicked = (item) => {
   store.dispatch(types.ADD_FILTER_CAMPAIGN_NAME, item.columns.campaignName)

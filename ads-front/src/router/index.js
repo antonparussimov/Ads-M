@@ -54,7 +54,12 @@ const routes = [
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: () => import('/src/components/not_found/NotFoundView.vue'),
-  }
+  },
+  {
+    path: '/gpt/chat',
+    name: 'ModifyAdTex',
+    component: () => import('/src/components/modify/ModifyAdTex.vue')
+  },
 ]
 
 const router = createRouter({
