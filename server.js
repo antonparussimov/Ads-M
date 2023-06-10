@@ -1,6 +1,7 @@
 const express = require("express");
+const { Configuration, OpenAIApi } = require("openai");
+const bodyParser = require('body-parser')
 const cors = require("cors");
-
 const app = express();
 
 var corsOptions = {
@@ -44,3 +45,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+require("./app/routes/chatgpt.routes")(app);
