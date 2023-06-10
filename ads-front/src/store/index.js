@@ -18,7 +18,7 @@ const ShowLoading3 = localStorage.getItem("showloading3")
 const state = {
   campaignList: [],
   campaignDetail: {
-    id: 7128276846151483393,
+    id: null,
     startDate: '2022-07-01',
     endDate: '2022-12-01',
     selectedColumns: [

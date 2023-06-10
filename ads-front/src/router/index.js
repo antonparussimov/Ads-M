@@ -68,20 +68,23 @@ const router = createRouter({
   routes,
 })
 
-const store = useStore()
+
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    // await store.dispatch('loadUser')
     if (!localStorage.token) {
       next({ name: 'login' })
     } else {
+      const store = useStore()
+      await store.dispatch('auth/loadUser')
       next()
     }
   } else if(to.matched.some(record => record.meta.requiresAdvertiserAuth)) {
     if(!localStorage.advertiserToken) {
       next({name: 'advertiser.login'})
     } else {
+      const store = useStore()
+      await store.dispatch('advertiserAuth/loadAdvertiser')
       next()
     }
   } else {

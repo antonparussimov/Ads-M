@@ -14,63 +14,30 @@
             {{ email }}
           </v-list-item-title>
         </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <SelectAdvertiserModal />
-          </v-list-item-title>
-        </v-list-item>
         <v-list-item v-for="(item, index) in items" :key="index" @click="goToPage(item.name)">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
   </div>
-  <v-dialog
-    v-model="dialog"
-    :scrim="false"
-    persistent
-    width="auto"
-  >
-    <v-card
-      color="primary"
-    >
-      <v-card-text>
-        Getting campaigns from Tiktok...
-        <v-progress-linear
-          indeterminate
-          color="white"
-          class="mb-0"
-        ></v-progress-linear>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import * as types from '../../store/types'
-import SelectAdvertiserModal from './SelectAdvertiserModal.vue'
+import * as types from '../../../store/types'
 
 const store = useStore()
 
 const isOpen = ref(false)
 
 const email = computed(() => {
-  return store.state.auth.user.email
-})
-
-const dialog = computed(() => {
-  return store.state.campaignGettingFlag
+  return store.state.advertiserAuth.advertiser.email
 })
 
 const items = ref([
-  { title: 'Campaigns', name: 'campaigns' }, 
-  { title: 'Add Campaign', name: 'add_campaign' }, 
-  { title: 'データを更新する', name: 'get_campagin_from_tiktok' },
-  {title: '広告の台本を作る',name: 'chatgpt'},
-  { title: 'logout', name: 'logout' }, 
+  { title: 'Logout', name: 'advertiser.logout' }, 
 ])
 
 function toggleMenu() {
@@ -79,17 +46,9 @@ function toggleMenu() {
 
 const router = useRouter()
 function goToPage(name) {
-  if(name == 'campaigns') {
-    router.push('/tik/perf')
-  } else if(name == 'add_campaign') {
-    router.push('/tik/perf/campaign/add')
-  } else if(name == 'get_campagin_from_tiktok') {
-    store.dispatch(types.GET_CAPAIGN_FROM_TIKTOK)
-  } else if(name == 'logout') {
-    store.commit('auth/Logout')
-    router.push('/login')
-  }else if(name == 'chatgpt'){
-    router.push('/gpt')
+  if(name == 'advertiser.logout') {
+    store.commit('advertiserAuth/Logout')
+    router.push({name: 'advertiser.login'})
   }
 }
 </script>
