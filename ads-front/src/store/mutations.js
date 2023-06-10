@@ -148,23 +148,26 @@ export default {
     console.log(state.nowtext)
 
   },
-  addgpttexttofinishedtext(state, payload) {
+async  addgpttexttofinishedtext(state, payload) {
     //loading画像表示
     state.showloading2 = true
-    axios
+    await axios
       .post('/api/modify/', {
         data:
           '今あなたは、'+state.tmp.title+'の動画広告の台本を作っています。'
-          +"そこで、クリエイティビティにあふれた、優秀な広告製作者であるあなたは、絶対に、"+ payload.aim + 'であるように、次の文章、'+state.nowtext+'、の続きを書いてください。 \n' 
+          +"そこで、クリエイティビティにあふれた、優秀な広告製作者であるあなたは、絶対に、"+ payload.aim + 'になるように、次の文章、\n'+state.nowtext+'\n,の続きを書いてください。 \n' 
           +'以下の制約条件を厳密に守ってください。\n' 
           +'## 制約条件 \n' 
           +'- 本文以外を消してください\n' 
-          +'- 元の文章は消さないで、続きの文のみを書いてください。\n' 
+          +'- 続きの文のみを書いてください。\n' 
+          +'- 動画広告の台本であることに注意してください。'
+          +'次のフォーマットを守ってください。\n'
+          +'続きの文章'
 
                     ,      })
       .then((res) => {
         console.log(res.data)
-          state.nowtext  = res.data
+          state.nowtext  += res.data
         //loadingの画像を消す
         state.showloading2 = false
 
@@ -173,7 +176,7 @@ export default {
 async  addlist(state, payload) {
     let flag = 0;
     console.log(state.tmp)
-    //前のやつ消す
+    //前の提案結果を消す
     state.lists = []
     //loading画像表示
     state.showloading = true
@@ -234,13 +237,16 @@ await    axios
   },
   removefinishedlist(state, payload) {
     state.finished.splice(payload.listIndex, 1)},
-  addlistrewrite(state, payload) {
+  async addlistrewrite(state, payload) {
     console.log(payload)
+    let flag = 0;
+   
     state.lists = []
     //loading画像表示
     state.showloading3 = true  
-    
-    axios
+    for (let i=0 ; i<6;i++){
+
+      await    axios
       .post('/api/modify/', {
         data:
           '今は'+state.tmp.title+'の動画広告の台本を作っています。'
@@ -256,10 +262,22 @@ await    axios
       })
       .then((res) => {
         console.log(res.data)
+        if (typeof res.data != typeof {}){
+          flag = 1
+        }
+        else if (Object.keys(res.data).length != 5){flag = 1}
+        else{
         for (const target in res.data) {
           state.lists.push({ title: res.data[target] })
         }
+        console.log(flag)
+        if (flag == 1){
+          console.log(1111111111111111111111111111111)
+          if (i == 5){
+            state.lists.push({title:"エラーが起きました。もう一度試してください。"})
+            state.showloading = false
+          }}}})}
                 //loadingの画像を消す
                 state.showloading3 = false
-})}
+}
 }
