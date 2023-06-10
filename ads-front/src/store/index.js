@@ -58,12 +58,7 @@ const state = {
   advertiserId: null,
   accessToken: null,
     //modify
-    lists:[
-      {
-        title: '製品、特徴の欄に入力し、sendボタンを押してください',
-        cards: [{ body: 'English' }, { body: 'Mathematics' }],
-      },
-    ],
+    lists:[],
     tmp:[],
     finished:[],
   //      nowtext:"",

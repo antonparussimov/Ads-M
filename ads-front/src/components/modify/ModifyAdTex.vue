@@ -3,6 +3,7 @@ import ListAdd from './ListAdd.vue'
 import ListContainer from './ListContainer.vue'
 import SendAll from './SendAll.vue'
 import AddGptTextToFinishedText from './AddGptTextToFinishedText.vue'
+import HamburgerMenu from '../common/HamburgerMenu.vue'
 import ReWrite from "./ReWrite.vue"
 import FinishedTextArea from "./FinishedTextArea.vue"
 import { useStore } from 'vuex'
@@ -77,11 +78,16 @@ const copyToClipboard = () => {
 </script>
 
 <template>
-  <div class="flex flex-row mt-10">
-    <strong class="absolute h-9 fixed bg-emerald-400 text-white top-0 left-0 right-0">
-      　　原稿作成アシスタントAI </strong>
+  <!-- a
+<strong class="z-40 mt-0 absolute top-0 left-0 right-0 h-12 bg-blue-900 text-white">
+      <span class = "relative m-10 mt-10">
+        原稿作成アシスタントAI
+      </span>
+</strong> -->
+<HamburgerMenu />
+<div class="flex flex-row h-full">
 
-    <div class="relative basis-1/3 h-full scroll-area mx-8 ">
+    <div class="relative basis-1/3 h-full scroll-area mx-8">
       <a class="flex items-center w-full px-3 mt-3" href="#" v-on:click="click_showinformation">
         <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path
